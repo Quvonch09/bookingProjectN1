@@ -1,7 +1,10 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.req.ReqLibrary;
+import com.bookingprojectn1.security.CurrentUser;
 import com.bookingprojectn1.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +60,17 @@ public class LibraryController {
     @DeleteMapping("/{libraryId}")
     public ResponseEntity<ApiResponse> deleteLibrary(@PathVariable Long libraryId) {
         ApiResponse apiResponse = libraryService.deleteLibrary(libraryId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @Operation(summary = "ADMIN/USER/LIBRARIAN libraryga feedback qushish")
+    @PostMapping("/saveFeedback/{libraryId}")
+    public ResponseEntity<ApiResponse> saveFeedback(@PathVariable Long libraryId,
+                                                    @RequestBody FeedbackDTO feedbackDTO,
+                                                    @CurrentUser User user){
+        ApiResponse apiResponse = libraryService.saveFeedback(libraryId, feedbackDTO, user);
         return ResponseEntity.ok(apiResponse);
     }
 }
