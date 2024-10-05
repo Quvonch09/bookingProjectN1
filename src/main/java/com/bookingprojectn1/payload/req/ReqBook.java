@@ -15,4 +15,6 @@ public class ReqBook {
     private String author;
     private Integer pageCount;
     private Long fileId;
+    @Schema(hidden = true)
+    private Long libraryId;
 }

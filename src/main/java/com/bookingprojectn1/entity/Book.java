@@ -24,4 +24,6 @@ public class Book {
     private File file;
     @ManyToMany
     private List<Feedback> feedbackList;
+    @ManyToOne
+    private Library library;
 }

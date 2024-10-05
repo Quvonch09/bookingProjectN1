@@ -20,9 +20,9 @@ public class BookController {
 
     @Operation(summary = "ADMIN/LIBRARIAN book qo'shish")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
-    @PostMapping
-    public ResponseEntity<ApiResponse> addBook(@RequestBody ReqBook book) {
-        ApiResponse apiResponse = bookService.addBook(book);
+    @PostMapping("/{libraryId}")
+    public ResponseEntity<ApiResponse> addBook(@RequestBody ReqBook book,@PathVariable Long libraryId) {
+        ApiResponse apiResponse = bookService.addBook(book,libraryId);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -32,9 +32,10 @@ public class BookController {
     @GetMapping("/search/book")
     public ResponseEntity<ApiResponse> searchBook(@RequestParam(value = "title", required = false) String title,
                                                   @RequestParam(value = "author", required = false) String author,
+                                                  @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title, author, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title, author,libraryId, page, size);
         return ResponseEntity.ok(allBooks);
     }
 
