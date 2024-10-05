@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface UserBooksRepository extends JpaRepository<UserBooks, Long> {
-    boolean existsByBookIdAndUsername(Long bookId, String userName);
+    boolean existsByBookIdAndUserName(Long bookId, String userName);
 
     @Query(value = "select * from user_books ub where (?1 IS NULL OR ub.book_id = ?1) " +
             "and (?1 IS NULL OR LOWER(ub.user_name) LIKE LOWER(CONCAT('%', ?1, '%')))", nativeQuery = true)
