@@ -1,6 +1,6 @@
 package com.bookingprojectn1.payload.res;
 
-import com.bookingprojectn1.payload.FeedBackLibraryDTO;
+import com.bookingprojectn1.payload.FeedbackDTO;
 import lombok.*;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public class ResLibrary {
     private double lat;
     private double lng;
     private Long fileId;
-    private List<FeedBackLibraryDTO> feedBackLibraryDTOList;
+    private List<FeedbackDTO> feedBackLibraryDTOList;
 }

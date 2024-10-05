@@ -3,12 +3,14 @@ package com.bookingprojectn1.service;
 import com.bookingprojectn1.entity.Feedback;
 import com.bookingprojectn1.entity.File;
 import com.bookingprojectn1.entity.Library;
+import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
-import com.bookingprojectn1.payload.FeedBackLibraryDTO;
+import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.req.ReqLibrary;
 import com.bookingprojectn1.payload.res.ResLibrary;
 import com.bookingprojectn1.payload.res.ResPageable;
+import com.bookingprojectn1.repository.FeedbackRepository;
 import com.bookingprojectn1.repository.FileRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class LibraryService {
     private final LibraryRepository libraryRepository;
     private final FileRepository fileRepository;
+    private final FeedbackRepository feedbackRepository;
 
     public ApiResponse saveLibrary(ReqLibrary reqLibrary) {
         boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getName());
@@ -85,14 +88,14 @@ public class LibraryService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        List<FeedBackLibraryDTO> feedBackLibraryDTOS = new ArrayList<>();
+        List<FeedbackDTO> feedBackLibraryDTOS = new ArrayList<>();
 
         if (library.getFeedbackList().isEmpty()){
             feedBackLibraryDTOS=null;
         }
 
         for (Feedback feedBackForLibrary : library.getFeedbackList()) {
-            FeedBackLibraryDTO feedBackLibraryDTO = FeedBackLibraryDTO.builder()
+            FeedbackDTO feedBackLibraryDTO = FeedbackDTO.builder()
                     .id(feedBackForLibrary.getId())
                     .message(feedBackForLibrary.getMessage())
                     .ball(feedBackForLibrary.getBall())
@@ -138,5 +141,24 @@ public class LibraryService {
 
         libraryRepository.delete(library);
         return new ApiResponse("Successfully deleted library");
+    }
+
+
+    public ApiResponse saveFeedback(Long libraryId, FeedbackDTO feedbackDTO, User user){
+        Library library = libraryRepository.findById(libraryId).orElse(null);
+        if (library == null){
+            return new ApiResponse(ResponseError.NOTFOUND("Library"));
+        }
+
+        Feedback feedback = Feedback.builder()
+                .message(feedbackDTO.getMessage())
+                .ball(feedbackDTO.getBall())
+                .createdBy(user)
+                .build();
+        feedbackRepository.save(feedback);
+
+        library.getFeedbackList().add(feedback);
+        libraryRepository.save(library);
+        return new ApiResponse("Successfully saved library");
     }
 }

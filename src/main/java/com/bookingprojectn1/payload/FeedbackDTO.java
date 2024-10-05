@@ -1,5 +1,6 @@
 package com.bookingprojectn1.payload;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
@@ -7,10 +8,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FeedBackBookDTO {
+public class FeedbackDTO {
+    @Schema(hidden = true)
     private Integer id;
     private String message;
     private int ball;
+    @Schema(hidden = true)
     private String createdBy;
-    private Long bookId;
 }

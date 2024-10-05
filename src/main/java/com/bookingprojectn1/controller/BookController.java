@@ -1,7 +1,10 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.req.ReqBook;
+import com.bookingprojectn1.security.CurrentUser;
 import com.bookingprojectn1.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +61,16 @@ public class BookController {
     @DeleteMapping("/{bookId}")
     public ResponseEntity<ApiResponse> deleteBook(@PathVariable Long bookId) {
         ApiResponse apiResponse = bookService.deleteBook(bookId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @Operation(summary = "ADMIN/LIBRARIAN/USER bookga feedback berish uchun")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @PostMapping("/saveFeedback/{bookId}")
+    public ResponseEntity<ApiResponse> saveFeedback(@PathVariable Long bookId,
+                                                    @CurrentUser User user,
+                                                    @RequestBody FeedbackDTO feedbackDTO){
+        ApiResponse apiResponse = bookService.saveFeedback(bookId, feedbackDTO, user);
         return ResponseEntity.ok(apiResponse);
     }
 }
