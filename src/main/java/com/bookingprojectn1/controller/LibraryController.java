@@ -23,7 +23,7 @@ public class LibraryController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
     @Operation(summary = "Admin search library")
     @GetMapping("/searchLibrary")
     public ResponseEntity<ApiResponse> searchLibrary(@RequestParam(value = "name" ,required = false) String name,
