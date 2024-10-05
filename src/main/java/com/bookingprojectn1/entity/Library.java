@@ -19,7 +19,7 @@ public class Library {
     private double lat;
     private double lng;
     @ManyToMany
-    private List<FeedBackForLibrary> feedBackForLibraryList;
+    private List<Feedback> feedbackList;
     @OneToOne
     private File file;
 }
