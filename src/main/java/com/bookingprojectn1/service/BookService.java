@@ -27,10 +27,10 @@ public class BookService {
     private final FeedbackRepository feedbackRepository;
     private final LibraryRepository libraryRepository;
 
-    public ApiResponse addBook(ReqBook reqBook,Long libraryId) {
+    public ApiResponse addBook(ReqBook reqBook) {
         File file = fileRepository.findById(reqBook.getFileId()).orElse(null);
 
-        Library library = libraryRepository.findById(libraryId).orElse(null);
+        Library library = libraryRepository.findById(reqBook.getLibraryId()).orElse(null);
         if (library == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
@@ -89,6 +89,7 @@ public class BookService {
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile().getId())
+                .libraryId(book.getLibrary().getId())
                 .feedBackBook(feedBackBookDTOList)
                 .build();
 
@@ -106,6 +107,7 @@ public class BookService {
         book.setAuthor(reqBook.getAuthor());
         book.setPageCount(reqBook.getPageCount());
         book.setFile(fileRepository.findById(reqBook.getFileId()).orElse(null));
+        book.setLibrary(libraryRepository.findById(reqBook.getLibraryId()).orElse(null));
         bookRepository.save(book);
         return new ApiResponse("Successfully updated Book");
     }

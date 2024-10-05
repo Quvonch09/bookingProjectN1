@@ -20,9 +20,9 @@ public class BookController {
 
     @Operation(summary = "ADMIN/LIBRARIAN book qo'shish")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
-    @PostMapping("/{libraryId}")
-    public ResponseEntity<ApiResponse> addBook(@RequestBody ReqBook book,@PathVariable Long libraryId) {
-        ApiResponse apiResponse = bookService.addBook(book,libraryId);
+    @PostMapping
+    public ResponseEntity<ApiResponse> addBook(@RequestBody ReqBook book) {
+        ApiResponse apiResponse = bookService.addBook(book);
         return ResponseEntity.ok(apiResponse);
     }
 
