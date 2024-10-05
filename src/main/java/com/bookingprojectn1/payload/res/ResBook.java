@@ -16,5 +16,6 @@ public class ResBook {
     private String author;
     private Integer pageCount;
     private Long fileId;
+    private Long libraryId;
     private List<FeedbackDTO> feedBackBook;
 }

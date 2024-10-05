@@ -32,9 +32,10 @@ public class BookController {
     @GetMapping("/search/book")
     public ResponseEntity<ApiResponse> searchBook(@RequestParam(value = "title", required = false) String title,
                                                   @RequestParam(value = "author", required = false) String author,
+                                                  @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title, author, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title, author,libraryId, page, size);
         return ResponseEntity.ok(allBooks);
     }
 

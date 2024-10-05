@@ -1,9 +1,6 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.Feedback;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.User;
+import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
@@ -13,6 +10,7 @@ import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.FeedbackRepository;
 import com.bookingprojectn1.repository.FileRepository;
+import com.bookingprojectn1.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,19 +25,23 @@ public class BookService {
     private final BookRepository bookRepository;
     private final FileRepository fileRepository;
     private final FeedbackRepository feedbackRepository;
+    private final LibraryRepository libraryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
         File file = fileRepository.findById(reqBook.getFileId()).orElse(null);
-        if (file == null) {
-            return new ApiResponse(ResponseError.NOTFOUND("File"));
+
+        Library library = libraryRepository.findById(reqBook.getLibraryId()).orElse(null);
+        if (library == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
         Book book = Book.builder()
                 .title(reqBook.getTitle())
                 .author(reqBook.getAuthor())
                 .pageCount(reqBook.getPageCount())
-                .file(file)
+                .file(file!=null ? file : null)
                 .feedbackList(null)
+                .library(library)
                 .build();
         bookRepository.save(book);
 
@@ -47,9 +49,9 @@ public class BookService {
     }
 
 
-    public ApiResponse getAllBooks(String title,String author,int page, int size){
+    public ApiResponse getAllBooks(String title,String author,Long libraryId,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,author,pageRequest);
+        Page<Book> books = bookRepository.searchBook(title,author,libraryId,pageRequest);
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
             reqBookList.add(reqBook(book));
@@ -87,6 +89,7 @@ public class BookService {
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile().getId())
+                .libraryId(book.getLibrary().getId())
                 .feedBackBook(feedBackBookDTOList)
                 .build();
 
@@ -104,6 +107,7 @@ public class BookService {
         book.setAuthor(reqBook.getAuthor());
         book.setPageCount(reqBook.getPageCount());
         book.setFile(fileRepository.findById(reqBook.getFileId()).orElse(null));
+        book.setLibrary(libraryRepository.findById(reqBook.getLibraryId()).orElse(null));
         bookRepository.save(book);
         return new ApiResponse("Successfully updated Book");
     }
@@ -144,7 +148,8 @@ public class BookService {
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
-                .fileId(book.getFile().getId())
+                .fileId(book.getFile()!=null ? book.getFile().getId():null)
+                .libraryId(book.getLibrary()!= null ? book.getLibrary().getId():null)
                 .build();
     }
 

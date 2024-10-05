@@ -35,16 +35,13 @@ public class LibraryService {
         }
 
         File file = fileRepository.findById(reqLibrary.getFileId()).orElse(null);
-        if (file == null) {
-            file = new File();
-        }
 
         Library library = Library.builder()
                 .name(reqLibrary.getName())
                 .lat(reqLibrary.getLat())
                 .lng(reqLibrary.getLng())
                 .feedbackList(null)
-                .file(file)
+                .file(file!= null ? file : null)
                 .build();
         libraryRepository.save(library);
         return new ApiResponse("Successfully saved library");
