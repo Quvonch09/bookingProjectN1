@@ -36,6 +36,15 @@ public class UserBooksController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @Operation(summary = "Admin/Librarian userga ijaraga berilganlarni bittasini kurish")
+    @GetMapping("/getOne/{userBookId}")
+    public ResponseEntity<ApiResponse> getOneUserBook(@PathVariable Long userBookId){
+        ApiResponse oneUserBooks = userBooksService.getOneUserBooks(userBookId);
+        return ResponseEntity.ok(oneUserBooks);
+    }
+
+
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
     @Operation(summary = "Admin/Librarian userga ijaraga berilganlarni update qilish ")

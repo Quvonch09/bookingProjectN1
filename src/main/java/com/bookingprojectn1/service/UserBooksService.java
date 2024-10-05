@@ -24,7 +24,7 @@ public class UserBooksService {
 
 
     public ApiResponse saveUserBooks(ReqUserBooks reqUserBooks) {
-        boolean b = userBooksRepository.existsByBookIdAndUsername(reqUserBooks.getBookId(), reqUserBooks.getUserName());
+        boolean b = userBooksRepository.existsByBookIdAndUserName(reqUserBooks.getBookId(), reqUserBooks.getUserName());
         if (b) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("User Books already exist"));
         }
