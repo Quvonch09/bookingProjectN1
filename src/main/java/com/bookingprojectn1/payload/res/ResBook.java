@@ -1,6 +1,5 @@
 package com.bookingprojectn1.payload.res;
 
-import com.bookingprojectn1.entity.FeedBackForBook;
 import com.bookingprojectn1.payload.FeedBackBookDTO;
 import lombok.*;
 

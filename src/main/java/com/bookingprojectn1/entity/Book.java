@@ -23,5 +23,5 @@ public class Book {
     @OneToOne
     private File file;
     @ManyToMany
-    private List<FeedBackForBook> feedBackForBook;
+    private List<Feedback> feedbackList;
 }

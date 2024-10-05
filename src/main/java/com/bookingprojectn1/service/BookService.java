@@ -1,7 +1,7 @@
 package com.bookingprojectn1.service;
 
 import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.FeedBackForBook;
+import com.bookingprojectn1.entity.Feedback;
 import com.bookingprojectn1.entity.File;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.FeedBackBookDTO;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class BookService {
                 .author(reqBook.getAuthor())
                 .pageCount(reqBook.getPageCount())
                 .file(file)
-                .feedBackForBook(null)
+                .feedbackList(null)
                 .build();
         bookRepository.save(book);
 
@@ -70,12 +69,11 @@ public class BookService {
         }
 
         List<FeedBackBookDTO> feedBackBookDTOList = new ArrayList<>();
-        for (FeedBackForBook feedBackForBook : book.getFeedBackForBook()) {
+        for (Feedback feedBackForBook : book.getFeedbackList()) {
             FeedBackBookDTO feedBackBookDTO = FeedBackBookDTO.builder()
                     .message(feedBackForBook.getMessage())
                     .ball(feedBackForBook.getBall())
                     .createdBy(feedBackForBook.getCreatedBy().getFirstName() + " " + feedBackForBook.getCreatedBy().getLastName())
-                    .bookId(feedBackForBook.getBook().getId())
                     .build();
             feedBackBookDTOList.add(feedBackBookDTO);
         }

@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FeedBackForBook {
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,5 @@ public class FeedBackForBook {
     private int ball; // 1-5 gacha ball kitobga
     @ManyToOne
     private User createdBy;
-    @ManyToOne
-    private Book book;
 
 }

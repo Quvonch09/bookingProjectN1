@@ -1,6 +1,6 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.FeedBackForLibrary;
+import com.bookingprojectn1.entity.Feedback;
 import com.bookingprojectn1.entity.File;
 import com.bookingprojectn1.entity.Library;
 import com.bookingprojectn1.payload.ApiResponse;
@@ -40,7 +40,7 @@ public class LibraryService {
                 .name(reqLibrary.getName())
                 .lat(reqLibrary.getLat())
                 .lng(reqLibrary.getLng())
-                .feedBackForLibraryList(null)
+                .feedbackList(null)
                 .file(file)
                 .build();
         libraryRepository.save(library);
@@ -87,15 +87,14 @@ public class LibraryService {
 
         List<FeedBackLibraryDTO> feedBackLibraryDTOS = new ArrayList<>();
 
-        if (library.getFeedBackForLibraryList().isEmpty()){
+        if (library.getFeedbackList().isEmpty()){
             feedBackLibraryDTOS=null;
         }
 
-        for (FeedBackForLibrary feedBackForLibrary : library.getFeedBackForLibraryList()) {
+        for (Feedback feedBackForLibrary : library.getFeedbackList()) {
             FeedBackLibraryDTO feedBackLibraryDTO = FeedBackLibraryDTO.builder()
                     .id(feedBackForLibrary.getId())
                     .message(feedBackForLibrary.getMessage())
-                    .libraryId(feedBackForLibrary.getLibrary().getId())
                     .ball(feedBackForLibrary.getBall())
                     .createdBy(feedBackForLibrary.getCreatedBy().getFirstName() + " " +
                                 feedBackForLibrary.getCreatedBy().getLastName())
