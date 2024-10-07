@@ -26,12 +26,4 @@ public class UserDTO {
     private String role;
 
     private Long fileId;
-
-    @Schema(hidden = true)
-    private Integer groupId;
-
-    @Schema(hidden = true)
-    private String groupName;
-
-    private int countGroup;
 }
