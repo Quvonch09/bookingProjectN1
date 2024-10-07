@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/library")
 @RequiredArgsConstructor
+@CrossOrigin
 public class LibraryController {
     private final LibraryService libraryService;
 
