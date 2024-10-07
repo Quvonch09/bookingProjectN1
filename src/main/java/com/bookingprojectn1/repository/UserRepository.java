@@ -27,4 +27,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByRole(ERole role);
 
+
+    @Query(value = """
+                SELECT u.*
+               FROM users u
+               WHERE (:keyword IS NULL OR LOWER(u.first_name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                      OR LOWER(u.last_name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+               AND (:phoneNumber IS NULL OR u.phone_number LIKE CONCAT('%', :phoneNumber, '%'))
+               AND (u.role = :role)
+                    """,
+            nativeQuery = true)
+    Page<User> searchUsers(@Param("keyword") String keyword,
+                           @Param("phoneNumber") String phoneNumber,
+                           @Param("role") String role,PageRequest pageRequest);
+
 }

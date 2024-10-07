@@ -88,7 +88,7 @@ public class BookService {
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
-                .fileId(book.getFile().getId())
+                .fileId(book.getFile() != null ? book.getFile().getId() : null)
                 .libraryId(book.getLibrary().getId())
                 .feedBackBook(feedBackBookDTOList)
                 .build();
