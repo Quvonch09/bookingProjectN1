@@ -13,6 +13,7 @@ import java.util.List;
 public class ResBook {
     private Long bookId;
     private String title;
+    private String description;
     private String author;
     private Integer pageCount;
     private Long fileId;

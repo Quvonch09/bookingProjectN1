@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -37,6 +39,7 @@ public class BookService {
 
         Book book = Book.builder()
                 .title(reqBook.getTitle())
+                .description(reqBook.getDescription())
                 .author(reqBook.getAuthor())
                 .pageCount(reqBook.getPageCount())
                 .file(file!=null ? file : null)
@@ -49,12 +52,13 @@ public class BookService {
     }
 
 
-    public ApiResponse getAllBooks(String title,String author,Long libraryId,int page, int size){
+    public ApiResponse getAllBooks(String title,String description,String author,Long libraryId,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,author,libraryId,pageRequest);
+        Page<Book> books = bookRepository.searchBook(title,description,author,libraryId,pageRequest);
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
-            reqBookList.add(reqBook(book));
+            double v = calculateAverageRating(book);
+            reqBookList.add(reqBook(book,v));
         }
         ResPageable resPageable = ResPageable.builder()
                 .page(page)
@@ -86,6 +90,7 @@ public class BookService {
         ResBook resBook = ResBook.builder()
                 .bookId(book.getId())
                 .title(book.getTitle())
+                .description(book.getDescription())
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile() != null ? book.getFile().getId() : null)
@@ -104,6 +109,7 @@ public class BookService {
         }
 
         book.setTitle(reqBook.getTitle());
+        book.setDescription(reqBook.getDescription());
         book.setAuthor(reqBook.getAuthor());
         book.setPageCount(reqBook.getPageCount());
         book.setFile(fileRepository.findById(reqBook.getFileId()).orElse(null));
@@ -141,11 +147,47 @@ public class BookService {
         return new ApiResponse("Successfully saved Feedback");
     }
 
+    public double calculateAverageRating(Book book) {
+        List<Feedback> feedbackList = book.getFeedbackList();
+        if (feedbackList == null || feedbackList.isEmpty()) {
+            return 0; // Feedback yo'q bo'lsa, 0 reyting qaytariladi
+        }
+        double total = 0;
+        for (Feedback feedback : feedbackList) {
+            total += feedback.getBall(); // Har bir feedbackdagi ballni yig'amiz
+        }
+        return total / feedbackList.size(); // O'rtacha qiymat qaytariladi
+    }
 
-    private ReqBook reqBook(Book book) {
+
+    public ApiResponse rateBook(){
+        List<ReqBook> reqBookList = new ArrayList<>();
+        List<Book> bookList = bookRepository.findAll();
+            Collections.sort(bookList, new Comparator<Book>() {
+                @Override
+                public int compare(Book b1, Book b2) {
+                    double avgRating1 = calculateAverageRating(b1);
+                    double avgRating2 = calculateAverageRating(b2);
+                    return Double.compare(avgRating2, avgRating1); // Kamayish tartibida
+                }
+            });
+        for (Book book : bookList) {
+            double rating = calculateAverageRating(book);
+            ReqBook reqBook = reqBook(book,rating);
+            reqBookList.add(reqBook);
+        }
+        return new ApiResponse(reqBookList);
+
+    }
+
+
+
+    private ReqBook reqBook(Book book,Double rate) {
         return ReqBook.builder()
                 .bookId(book.getId())
                 .title(book.getTitle())
+                .description(book.getDescription())
+                .rate(rate)
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile()!=null ? book.getFile().getId():null)

@@ -14,6 +14,7 @@ public class ReqUserBooks {
     @Schema(hidden = true)
     private Long id;
     private Long bookId;
+    @Schema(hidden = true)
     private String userName;
     private Long duration;
 }
