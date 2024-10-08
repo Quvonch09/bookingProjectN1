@@ -12,6 +12,9 @@ public class ReqBook {
     @Schema(hidden = true)
     private Long bookId;
     private String title;
+    @Schema(hidden = true)
+    private Double rate;
+    private String description;
     private String author;
     private Integer pageCount;
     private Long fileId;

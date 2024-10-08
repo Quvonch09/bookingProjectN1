@@ -32,11 +32,12 @@ public class BookController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @GetMapping("/search/book")
     public ResponseEntity<ApiResponse> searchBook(@RequestParam(value = "title", required = false) String title,
+                                                  @RequestParam(value = "description", required = false) String description,
                                                   @RequestParam(value = "author", required = false) String author,
                                                   @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title, author,libraryId, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title,description, author,libraryId, page, size);
         return ResponseEntity.ok(allBooks);
     }
 
@@ -67,12 +68,21 @@ public class BookController {
     }
 
     @Operation(summary = "ADMIN/LIBRARIAN/USER bookga feedback berish uchun")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @PostMapping("/saveFeedback/{bookId}")
     public ResponseEntity<ApiResponse> saveFeedback(@PathVariable Long bookId,
                                                     @CurrentUser User user,
                                                     @RequestBody FeedbackDTO feedbackDTO){
         ApiResponse apiResponse = bookService.saveFeedback(bookId, feedbackDTO, user);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @Operation(summary = "ADMIN/LIBRARIAN/USER booklarning reytingini kurish")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @GetMapping("/ratingBooks")
+    public ResponseEntity<ApiResponse> getRatingBook(){
+        ApiResponse apiResponse = bookService.rateBook();
         return ResponseEntity.ok(apiResponse);
     }
 }

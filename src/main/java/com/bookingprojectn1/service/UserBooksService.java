@@ -1,5 +1,6 @@
 package com.bookingprojectn1.service;
 
+import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.entity.UserBooks;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.ResponseError;
@@ -113,5 +114,28 @@ public class UserBooksService {
         }
         userBooksRepository.delete(userBooks);
         return new ApiResponse("User Books deleted successfully");
+    }
+
+
+
+    public ApiResponse getUserBooks(User user){
+        List<UserBooks> byUserName = userBooksRepository.findByUserName(user.getUsername());
+        if (byUserName.isEmpty()){
+            return new ApiResponse(ResponseError.NOTFOUND("User Books"));
+        }
+        List<ResUserBooks> resUserBooksList = new ArrayList<>();
+        for (UserBooks userBooks : byUserName) {
+            ResUserBooks resUserBooks = ResUserBooks.builder()
+                    .id(userBooks.getId())
+                    .bookId(userBooks.getBookId())
+                    .userName(userBooks.getUserName())
+                    .startTime(userBooks.getStartTime())
+                    .endTime(userBooks.getEndTime())
+                    .submitted(userBooks.isSubmitted())
+                    .duration(userBooks.getDuration().toDays())
+                    .build();
+            resUserBooksList.add(resUserBooks);
+        }
+        return new ApiResponse(resUserBooksList);
     }
 }

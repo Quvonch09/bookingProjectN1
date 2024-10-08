@@ -1,7 +1,9 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqUserBooks;
+import com.bookingprojectn1.security.CurrentUser;
 import com.bookingprojectn1.service.UserBooksService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +64,13 @@ public class UserBooksController {
     public ResponseEntity<ApiResponse> deleteUserBooks(@PathVariable Long userBookId){
         ApiResponse apiResponse = userBooksService.deleteUserBooks(userBookId);
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @Operation(summary = "Barcha userlar uzlari olgan kitoblarni kurish uchun")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @GetMapping("/getUserBooksByUser")
+    public ResponseEntity<ApiResponse> getUserBooksByUser(@CurrentUser User user){
+        ApiResponse userBooks = userBooksService.getUserBooks(user);
+        return ResponseEntity.ok(userBooks);
     }
 }
