@@ -31,7 +31,7 @@ public class LibraryService {
     public ApiResponse saveLibrary(ReqLibrary reqLibrary) {
         boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getName());
         if (b) {
-            return new ApiResponse(ResponseError.ALREADY_EXIST("Library already exists"));
+            return new ApiResponse(ResponseError.ALREADY_EXIST("Library"));
         }
 
         File file = fileRepository.findById(reqLibrary.getFileId()).orElse(null);
