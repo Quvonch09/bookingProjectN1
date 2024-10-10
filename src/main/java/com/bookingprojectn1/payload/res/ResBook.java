@@ -14,6 +14,7 @@ public class ResBook {
     private Long bookId;
     private String title;
     private String description;
+    private Long rate;
     private String author;
     private Integer pageCount;
     private Long fileId;
