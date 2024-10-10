@@ -80,6 +80,7 @@ public class BookService {
         List<FeedbackDTO> feedBackBookDTOList = new ArrayList<>();
         for (Feedback feedBackForBook : book.getFeedbackList()) {
             FeedbackDTO feedBackBookDTO = FeedbackDTO.builder()
+                    .id(feedBackForBook.getId())
                     .message(feedBackForBook.getMessage())
                     .ball(feedBackForBook.getBall())
                     .createdBy(feedBackForBook.getCreatedBy().getFirstName() + " " + feedBackForBook.getCreatedBy().getLastName())
@@ -91,6 +92,7 @@ public class BookService {
                 .bookId(book.getId())
                 .title(book.getTitle())
                 .description(book.getDescription())
+                .rate(Math.round(calculateAverageRating(book)))
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile() != null ? book.getFile().getId() : null)
@@ -187,7 +189,7 @@ public class BookService {
                 .bookId(book.getId())
                 .title(book.getTitle())
                 .description(book.getDescription())
-                .rate(rate)
+                .rate(Math.round(rate))
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile()!=null ? book.getFile().getId():null)
