@@ -2,12 +2,14 @@ package com.bookingprojectn1.service;
 
 import com.bookingprojectn1.entity.Book;
 import com.bookingprojectn1.entity.BookReservation;
+import com.bookingprojectn1.entity.Followed;
 import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.BookReservationDTO;
 import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.BookReservationRepository;
+import com.bookingprojectn1.repository.FollowedRepository;
 import com.bookingprojectn1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class BookReservationService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final FollowedRepository followedRepository;
 
     public ApiResponse reverseBook(BookReservationDTO bookReservationDTO) {
         Book book = bookRepository.findById(bookReservationDTO.getBookId()).orElse(null);
@@ -33,6 +36,15 @@ public class BookReservationService {
         if (user == null) {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
+
+        List<Followed> allByUser = followedRepository.findAllFollowed(user.getId(),book.getLibrary().getId());
+        for (Followed followed : allByUser) {
+            if (!followed.getUser().equals(user)) {
+                return new ApiResponse(
+                        ResponseError.DEFAULT_ERROR("Siz bu kutubxonadan kitob ololmaysiz chunki siz obuna bo'lmagansiz"));
+            }
+        }
+
 
         BookReservation reservation = BookReservation.builder()
                 .book(book)
