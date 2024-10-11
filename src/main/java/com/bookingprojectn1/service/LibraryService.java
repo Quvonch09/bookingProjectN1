@@ -1,9 +1,6 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.Feedback;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.Library;
-import com.bookingprojectn1.entity.User;
+import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
@@ -12,12 +9,14 @@ import com.bookingprojectn1.payload.res.ResLibrary;
 import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.FeedbackRepository;
 import com.bookingprojectn1.repository.FileRepository;
+import com.bookingprojectn1.repository.FollowedRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class LibraryService {
     private final LibraryRepository libraryRepository;
     private final FileRepository fileRepository;
     private final FeedbackRepository feedbackRepository;
+    private final FollowedRepository followedRepository;
 
     public ApiResponse saveLibrary(ReqLibrary reqLibrary) {
         boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getName());
@@ -41,6 +41,7 @@ public class LibraryService {
                 .lat(reqLibrary.getLat())
                 .lng(reqLibrary.getLng())
                 .feedbackList(null)
+                .followedList(null)
                 .file(file!= null ? file : null)
                 .build();
         libraryRepository.save(library);

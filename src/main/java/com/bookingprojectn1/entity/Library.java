@@ -18,8 +18,13 @@ public class Library {
     private String name;
     private double lat;
     private double lng;
+
     @ManyToMany
     private List<Feedback> feedbackList;
+
+    @ManyToMany
+    private List<Followed> followedList;
+
     @OneToOne
     private File file;
 }
