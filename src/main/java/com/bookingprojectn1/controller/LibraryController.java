@@ -65,13 +65,5 @@ public class LibraryController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
-    @Operation(summary = "ADMIN/USER/LIBRARIAN libraryga feedback qushish")
-    @PostMapping("/saveFeedback/{libraryId}")
-    public ResponseEntity<ApiResponse> saveFeedback(@PathVariable Long libraryId,
-                                                    @RequestBody FeedbackDTO feedbackDTO,
-                                                    @CurrentUser User user){
-        ApiResponse apiResponse = libraryService.saveFeedback(libraryId, feedbackDTO, user);
-        return ResponseEntity.ok(apiResponse);
-    }
+
 }
