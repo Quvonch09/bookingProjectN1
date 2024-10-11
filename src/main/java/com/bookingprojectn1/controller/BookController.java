@@ -67,15 +67,7 @@ public class BookController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @Operation(summary = "ADMIN/LIBRARIAN/USER bookga feedback berish uchun")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
-    @PostMapping("/saveFeedback/{bookId}")
-    public ResponseEntity<ApiResponse> saveFeedback(@PathVariable Long bookId,
-                                                    @CurrentUser User user,
-                                                    @RequestBody FeedbackDTO feedbackDTO){
-        ApiResponse apiResponse = bookService.saveFeedback(bookId, feedbackDTO, user);
-        return ResponseEntity.ok(apiResponse);
-    }
+
 
 
     @Operation(summary = "ADMIN/LIBRARIAN/USER booklarning reytingini kurish")

@@ -142,21 +142,5 @@ public class LibraryService {
     }
 
 
-    public ApiResponse saveFeedback(Long libraryId, FeedbackDTO feedbackDTO, User user){
-        Library library = libraryRepository.findById(libraryId).orElse(null);
-        if (library == null){
-            return new ApiResponse(ResponseError.NOTFOUND("Library"));
-        }
 
-        Feedback feedback = Feedback.builder()
-                .message(feedbackDTO.getMessage())
-                .ball(feedbackDTO.getBall())
-                .createdBy(user)
-                .build();
-        feedbackRepository.save(feedback);
-
-        library.getFeedbackList().add(feedback);
-        libraryRepository.save(library);
-        return new ApiResponse("Successfully saved library");
-    }
 }
