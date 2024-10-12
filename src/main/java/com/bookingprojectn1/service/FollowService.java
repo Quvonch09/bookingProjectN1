@@ -49,6 +49,6 @@ public class FollowService {
         followedRepository.save(followed);
         library.getFollowedList().add(followed);
         libraryRepository.save(library);
-        return new ApiResponse("Successfully saved library");
+        return new ApiResponse("Successfully saved follow");
     }
 }
