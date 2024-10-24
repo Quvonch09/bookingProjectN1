@@ -1,5 +1,6 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.entity.enums.ERole;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,21 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(authRegister));
     }
 
-    @Operation(summary = "Admin yangi librarian qoshadi")
+
+    @Operation(summary = "Parolni update qilish")
+    @PutMapping("/forgot-password")
+    public ResponseEntity<ApiResponse> forgotPassword(@RequestBody AuthLogin authLogin){
+        ApiResponse apiResponse = authService.forgotPassword(authLogin);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @Operation(summary = "Admin yangi user qoshadi")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/admin/save-librarian")
-    public ResponseEntity<ApiResponse> adminSaveTeacher(@Valid @RequestBody AuthRegister auth){
-        return ResponseEntity.ok(authService.adminSaveLibrarian(auth));
+    @PostMapping("/admin/save-user")
+    public ResponseEntity<ApiResponse> adminSaveTeacher(@Valid @RequestBody AuthRegister auth,
+                                                        @RequestParam ERole eRole){
+        return ResponseEntity.ok(authService.adminSaveLibrarian(auth,eRole));
     }
 
 }

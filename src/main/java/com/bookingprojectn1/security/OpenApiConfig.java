@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "SFERA LEARNING MANAGEMENT SYSTEM", version = "v1",
+        info = @Info(title = "LIBRARY PROJECT", version = "v1",
                 description = "This API just for learning Spring boot features",
                 contact = @Contact(name = "It city academy", url = "http://itcityacademy.uz", email = "admin@gmail.com"),
                 license = @License(name = "Apache Foundation", url = "https://apache.org/")

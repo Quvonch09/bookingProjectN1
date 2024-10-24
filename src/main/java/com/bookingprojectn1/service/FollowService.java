@@ -51,4 +51,13 @@ public class FollowService {
         libraryRepository.save(library);
         return new ApiResponse("Successfully saved follow");
     }
+
+
+
+
+
+    public ApiResponse deleteFollow(Long libraryId, Long userId) {
+        followedRepository.deleteAll(followedRepository.findAllFollowed(userId, libraryId));
+        return new ApiResponse("Successfully deleted");
+    }
 }

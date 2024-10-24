@@ -4,6 +4,7 @@ public class SecurityConstants {
     public static final String[] WHITE_LIST = {
             "/auth/login",
             "/auth/register",
+            "/auth/forgot-password",
             "/file/**",
             "/category/list",
             "notification/contact",

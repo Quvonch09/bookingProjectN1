@@ -25,7 +25,7 @@ public class DataLoader implements CommandLineRunner {
             newUser.setFirstName("Admin");
             newUser.setLastName("Admin");
             newUser.setPassword(passwordEncoder.encode("root123"));
-            newUser.setRole(ERole.ROLE_ADMIN);
+            newUser.setRole(ERole.ROLE_SUPER_ADMIN);
             newUser.setPhoneNumber("998901234567");
             newUser.setEnabled(true);
             newUser.setAccountNonExpired(true);
