@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/book-reservation")
 @RequiredArgsConstructor
@@ -31,6 +33,27 @@ public class BookReservationController {
     @GetMapping("/{bookId}")
     public ResponseEntity<ApiResponse> getBookReservationList(@PathVariable Long bookId) {
         ApiResponse reservationsByBook = bookReservationService.getReservationsByBook(bookId);
+        return ResponseEntity.ok(reservationsByBook);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @Operation(summary = "BookReservationni kunini uzgartirish")
+    @PutMapping("/{bookReservationId}")
+    public ResponseEntity<ApiResponse> updateBookReservationList(@PathVariable Long bookReservationId,
+                                                                 @RequestParam LocalDate reservationDate) {
+        ApiResponse reservationsByBook = bookReservationService.updateBookReservationDate(bookReservationId,reservationDate);
+        return ResponseEntity.ok(reservationsByBook);
+    }
+
+
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @Operation(summary = "BookReservationni kunini uzgartirish")
+    @DeleteMapping("/{bookReservationId}")
+    public ResponseEntity<ApiResponse> deleteBookReservationList(@PathVariable Long bookReservationId) {
+        ApiResponse reservationsByBook = bookReservationService.deleteReservation(bookReservationId);
         return ResponseEntity.ok(reservationsByBook);
     }
 }

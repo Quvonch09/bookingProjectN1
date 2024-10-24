@@ -21,6 +21,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
+    private final NotificationService notificationService;
 
 
     public ApiResponse login(AuthLogin authLogin)
@@ -36,6 +37,13 @@ public class AuthService {
             return new ApiResponse(responseLogin);
         }
 
+        notificationService.saveNotification(
+                user,
+                "Hurmatli" + user.getFirstName() + " " + user.getLastName() + "!",
+                "Siz bizning tizimimizga kirdingiz. Agar tizimda muammolar bo'lsa iltimos biz bilan bog'laning",
+                null,
+                false
+        );
         return new ApiResponse(ResponseError.PASSWORD_DID_NOT_MATCH());
     }
 
@@ -49,12 +57,18 @@ public class AuthService {
         }
 
         saveUser(auth, ERole.ROLE_USER);
-
+        notificationService.saveNotification(
+                byPhoneNumber,
+                "Hurmatli" + byPhoneNumber.getFirstName() + " " + byPhoneNumber.getLastName() + "!",
+                "Siz muvaffaqqiyatli ro'yhatdan o'tdingiz. Agar tizimda muammolar bo'lsa iltimos biz bilan bog'laning",
+                null,
+                false
+        );
         return new ApiResponse("Success");
     }
 
 
-    public ApiResponse adminSaveLibrarian(AuthRegister auth)
+    public ApiResponse adminSaveLibrarian(AuthRegister auth,ERole eRole)
     {
 
         User byPhoneNumber = userRepository.findByPhoneNumber(auth.getPhoneNumber());
@@ -62,9 +76,22 @@ public class AuthService {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Phone number"));
         }
 
-        saveUser(auth, ERole.ROLE_LIBRARIAN);
+        saveUser(auth, eRole);
 
 
+        return new ApiResponse("Success");
+    }
+
+
+
+    public ApiResponse forgotPassword(AuthLogin authLogin){
+        User byPhoneNumber = userRepository.findByPhoneNumber(authLogin.getPhoneNumber());
+        if (byPhoneNumber == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("USER"));
+        }
+
+        byPhoneNumber.setPassword(passwordEncoder.encode(authLogin.getPassword()));
+        userRepository.save(byPhoneNumber);
         return new ApiResponse("Success");
     }
 

@@ -81,4 +81,26 @@ public class BookReservationService {
 
         return new ApiResponse(bookReservationDTOList);
     }
+
+
+    public ApiResponse updateBookReservationDate(Long bookReservationId, LocalDate reservationDate) {
+        BookReservation bookReservation = bookReservationRepository.findById(bookReservationId).orElse(null);
+        if (bookReservation == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("Book reservation"));
+        }
+        bookReservation.setReservationDate(reservationDate);
+        bookReservationRepository.save(bookReservation);
+        return new ApiResponse("Book Reservation date successfully updated");
+    }
+
+
+    public ApiResponse deleteReservation(Long reservationId){
+        BookReservation bookReservation = bookReservationRepository.findById(reservationId).orElse(null);
+        if (bookReservation == null){
+            return new ApiResponse(ResponseError.NOTFOUND("BookReservation"));
+        }
+
+        bookReservationRepository.delete(bookReservation);
+        return new ApiResponse("Successfully deleted bookReservation");
+    }
 }
