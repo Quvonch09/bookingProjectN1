@@ -56,8 +56,8 @@ public class FollowService {
 
 
 
-    public ApiResponse deleteFollow(Long libraryId, Long userId) {
-        followedRepository.deleteAll(followedRepository.findAllFollowed(userId, libraryId));
+    public ApiResponse deleteFollow(Long libraryId, User user) {
+        followedRepository.deleteAll(followedRepository.findAllFollowed(user.getId(), libraryId));
         return new ApiResponse("Successfully deleted");
     }
 }

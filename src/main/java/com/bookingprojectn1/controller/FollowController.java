@@ -18,7 +18,7 @@ public class FollowController {
 
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "ADMIN/USER/LIBRARIAN libraryga follow bosish")
     @PostMapping("/saveFollowed/{libraryId}")
     public ResponseEntity<ApiResponse> saveFollow(@PathVariable Long libraryId,
@@ -27,11 +27,20 @@ public class FollowController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "ADMIN/USER/LIBRARIAN libraryga follow bosish")
     @GetMapping("/followListByLibrary/{libraryId}")
     public ResponseEntity<ApiResponse> getFollow(@PathVariable Long libraryId){
         ApiResponse apiResponse = followService.getFollowedByLibrary(libraryId);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
+    @Operation(summary = "Librarydan followni qaytarib olish")
+    @DeleteMapping("/unfollow/{libraryId}")
+    public ResponseEntity<ApiResponse> unfollow(@PathVariable Long libraryId,
+                                                @CurrentUser User user){
+        ApiResponse apiResponse = followService.deleteFollow(libraryId, user);
         return ResponseEntity.ok(apiResponse);
     }
 }

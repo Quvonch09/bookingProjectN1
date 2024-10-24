@@ -1,10 +1,7 @@
 package com.bookingprojectn1.controller;
 
-import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
-import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.req.ReqLibrary;
-import com.bookingprojectn1.security.CurrentUser;
 import com.bookingprojectn1.service.LibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,7 @@ public class LibraryController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Barcha search library")
     @GetMapping("/searchLibrary")
     public ResponseEntity<ApiResponse> searchLibrary(@RequestParam(value = "name" ,required = false) String name,
@@ -38,7 +35,7 @@ public class LibraryController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "ADMIN/USER/LIBRARIAN bitta libraryni kurish")
     @GetMapping("/getOne/{libraryId}")
     public ResponseEntity<ApiResponse> getOneLibrary(@PathVariable Long libraryId) {
