@@ -13,6 +13,7 @@ import java.util.List;
 public class ResLibrary {
     private Long libraryId;
     private String libraryName;
+    private Long ownerId;
     private double lat;
     private double lng;
     private Long fileId;

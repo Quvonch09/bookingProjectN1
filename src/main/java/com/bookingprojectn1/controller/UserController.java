@@ -20,14 +20,14 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "Barcha userlar uzining profilini kurish")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @GetMapping("/getMe")
     public ResponseEntity<ApiResponse> getMe(@CurrentUser User user){
         ApiResponse me = userService.getMe(user);
         return ResponseEntity.ok(me);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Hamma uzini profili update qilish")
     @PutMapping("/updateUser/{userId}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody UserDTO user){

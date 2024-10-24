@@ -7,10 +7,7 @@ import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.req.ReqLibrary;
 import com.bookingprojectn1.payload.res.ResLibrary;
 import com.bookingprojectn1.payload.res.ResPageable;
-import com.bookingprojectn1.repository.FeedbackRepository;
-import com.bookingprojectn1.repository.FileRepository;
-import com.bookingprojectn1.repository.FollowedRepository;
-import com.bookingprojectn1.repository.LibraryRepository;
+import com.bookingprojectn1.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +22,7 @@ import java.util.List;
 public class LibraryService {
     private final LibraryRepository libraryRepository;
     private final FileRepository fileRepository;
-    private final FeedbackRepository feedbackRepository;
-    private final FollowedRepository followedRepository;
+    private final UserRepository userRepository;
 
     public ApiResponse saveLibrary(ReqLibrary reqLibrary) {
         boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getName());
@@ -36,10 +32,16 @@ public class LibraryService {
 
         File file = fileRepository.findById(reqLibrary.getFileId()).orElse(null);
 
+        User user = userRepository.findById(reqLibrary.getOwnerId()).orElse(null);
+        if (user == null) {
+            user = new User();
+        }
+
         Library library = Library.builder()
                 .name(reqLibrary.getName())
                 .lat(reqLibrary.getLat())
                 .lng(reqLibrary.getLng())
+                .owner(user)
                 .feedbackList(null)
                 .followedList(null)
                 .file(file!= null ? file : null)
@@ -108,6 +110,7 @@ public class LibraryService {
                 .libraryName(library.getName())
                 .lat(library.getLat())
                 .lng(library.getLng())
+                .ownerId(library.getOwner().getId())
                 .fileId(library.getFile() != null ? library.getFile().getId():null)
                 .feedBackLibraryDTOList(feedBackLibraryDTOS)
                 .build();
@@ -121,10 +124,16 @@ public class LibraryService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
+        User user = userRepository.findById(reqLibrary.getOwnerId()).orElse(null);
+        if (user == null) {
+            user = new User();
+        }
+
         library.setId(id);
         library.setName(reqLibrary.getName());
         library.setLat(reqLibrary.getLat());
         library.setLng(reqLibrary.getLng());
+        library.setOwner(user);
         library.setFile(fileRepository.findById(reqLibrary.getFileId()).orElse(null));
         libraryRepository.save(library);
         return new ApiResponse("Successfully updated library");

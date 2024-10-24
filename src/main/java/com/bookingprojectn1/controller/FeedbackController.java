@@ -18,7 +18,7 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
     @Operation(summary = "ADMIN/LIBRARIAN/USER bookga feedback berish uchun")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @PostMapping("/forBook/{bookId}")
     public ResponseEntity<ApiResponse> saveFeedbackBook(@PathVariable Long bookId,
                                                     @CurrentUser User user,
@@ -28,7 +28,7 @@ public class FeedbackController {
     }
 
     @Operation(summary = "ADMIN/LIBRARIAN/USER libraryga feedback berish uchun")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @PostMapping("/forLibrary/{bookId}")
     public ResponseEntity<ApiResponse> saveFeedbackLibrary(@PathVariable Long bookId,
                                                     @CurrentUser User user,
