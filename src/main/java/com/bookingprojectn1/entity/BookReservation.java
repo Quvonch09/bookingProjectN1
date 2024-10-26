@@ -3,7 +3,9 @@ package com.bookingprojectn1.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,5 +26,7 @@ public class BookReservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private LocalDate reservationDate;
+    private LocalDate startReservation;
+    private LocalDate endReservation;
+
 }
