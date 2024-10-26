@@ -12,9 +12,7 @@ import java.time.LocalDate;
 @Builder
 
 public class BookReservationDTO {
-    @Schema(hidden = true)
-    private Long reservationId;
     private Long bookId;
     private Long userId;
-    private LocalDate reservationDate;
+    private Long duration;
 }
