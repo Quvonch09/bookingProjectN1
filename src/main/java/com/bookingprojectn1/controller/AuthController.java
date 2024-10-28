@@ -1,16 +1,16 @@
 package com.bookingprojectn1.controller;
 
 import com.bookingprojectn1.entity.enums.ERole;
+import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.auth.AuthLogin;
+import com.bookingprojectn1.payload.auth.AuthRegister;
+import com.bookingprojectn1.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.bookingprojectn1.payload.ApiResponse;
-import com.bookingprojectn1.payload.auth.AuthLogin;
-import com.bookingprojectn1.payload.auth.AuthRegister;
-import com.bookingprojectn1.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")

@@ -1,13 +1,13 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.res.ResFile;
+import com.bookingprojectn1.service.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.bookingprojectn1.payload.ApiResponse;
-import com.bookingprojectn1.payload.res.ResFile;
-import com.bookingprojectn1.service.FileService;
 
 @CrossOrigin
 @RestController

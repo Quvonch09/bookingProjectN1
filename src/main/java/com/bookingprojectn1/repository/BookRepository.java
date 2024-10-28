@@ -1,8 +1,6 @@
 package com.bookingprojectn1.repository;
 
 import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.User;
-import com.bookingprojectn1.payload.req.ReqBook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

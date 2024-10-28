@@ -1,12 +1,9 @@
 package com.bookingprojectn1.repository;
 
-import com.bookingprojectn1.entity.Book;
 import com.bookingprojectn1.entity.BookReservation;
-import com.bookingprojectn1.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.util.List;

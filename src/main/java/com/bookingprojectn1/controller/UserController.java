@@ -36,7 +36,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "ADMIN userlarni barchasini search qilish")
     @GetMapping("/searchUser")
     public ResponseEntity<ApiResponse> searchUsers(@RequestParam(value = "keyword", required = false) String keyword,
