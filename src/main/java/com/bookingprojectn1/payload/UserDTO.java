@@ -20,6 +20,8 @@ public class UserDTO {
 
     private String lastName;
 
+    private String userName;
+
     private String phoneNumber;
 
     @Schema(hidden = true)

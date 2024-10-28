@@ -12,13 +12,17 @@ import lombok.*;
 @Builder
 public class AuthRegister {
 
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 25)
     @NotBlank
     private String firstName;
 
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 25)
     @NotBlank
     private String lastName;
+
+    @Size(min = 3, max = 25)
+    @NotBlank
+    private String userName;
 
     @Pattern(regexp = "^998([0-9][012345789]|[0-9][125679]|7[01234569])[0-9]{7}$",
             message = "Invalid Uzbekistan phone number")

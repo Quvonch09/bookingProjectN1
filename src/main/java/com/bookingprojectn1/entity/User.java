@@ -29,6 +29,8 @@ public class User implements UserDetails {
 
     private String lastName;
 
+    private String userName;
+
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 
