@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -28,7 +29,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 SELECT u.*
                FROM users u
                WHERE (:keyword IS NULL OR LOWER(u.first_name) LIKE LOWER(CONCAT('%', :keyword, '%'))
-                      OR LOWER(u.last_name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+                      OR LOWER(u.last_name) LIKE LOWER(CONCAT('%', :keyword, '%')) 
+                   OR LOWER(u.user_name) LIKE LOWER(CONCAT('%', :keyword, '%')))
                AND (:phoneNumber IS NULL OR u.phone_number LIKE CONCAT('%', :phoneNumber, '%'))
                AND (u.role = :role)
                     """,
@@ -38,4 +40,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
                            @Param("role") String role,PageRequest pageRequest);
 
     Long countByRole(ERole role);
+    Optional<User> findByUserName(String username);
 }

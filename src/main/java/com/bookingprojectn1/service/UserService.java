@@ -30,6 +30,7 @@ public class UserService {
                 .userId(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .userName(user.getUsername())
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole().name())
                 .fileId(user.getFile() != null ? user.getFile().getId() : null)
@@ -46,6 +47,7 @@ public class UserService {
 
         user1.setFirstName(user.getFirstName());
         user1.setLastName(user.getLastName());
+        user1.setUserName(user.getUserName());
         user1.setPhoneNumber(user.getPhoneNumber());
         user1.setFile(fileRepository.findById(user.getFileId()).orElse(null));
         userRepository.save(user1);
@@ -68,6 +70,7 @@ public class UserService {
                     .userId(user.getId())
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())
+                    .userName(user.getUsername())
                     .phoneNumber(user.getPhoneNumber())
                     .role(user.getRole().name())
                     .fileId(user.getFile() != null ? user.getFile().getId() : null)
