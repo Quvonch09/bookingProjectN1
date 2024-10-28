@@ -1,6 +1,5 @@
 package com.bookingprojectn1.controller;
 
-import com.bookingprojectn1.entity.BookReservation;
 import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.BookReservationDTO;
@@ -11,9 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Duration;
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/book-reservation")
