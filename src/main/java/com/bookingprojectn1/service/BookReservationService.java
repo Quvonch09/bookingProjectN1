@@ -8,11 +8,14 @@ import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.BookReservationDTO;
 import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.res.ResBookReservation;
+import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.BookReservationRepository;
 import com.bookingprojectn1.repository.FollowedRepository;
 import com.bookingprojectn1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -59,8 +62,8 @@ public class BookReservationService {
         notificationService.saveNotification(
                 user,
                 "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
-                "Sizga " + reservation.getEndReservation() + "kunigacha " +
-                        book.getTitle() + "nomli kitobi band qilindi!",
+                "Sizga " + reservation.getEndReservation() + " kunigacha " +
+                        book.getTitle() + " nomli kitobi band qilindi!",
                 0L,
                 false
         );
@@ -116,6 +119,33 @@ public class BookReservationService {
         }
 
         return new ApiResponse(bookReservationDTOList);
+    }
+
+    public ApiResponse search(Long user, Long bookId, LocalDate startDate, LocalDate endDate, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<BookReservation> all = bookReservationRepository.findAll(bookId, user, startDate, endDate, pageRequest);
+        List<ResBookReservation> bookReservationDTOList = new ArrayList<>();
+        for (BookReservation bookReservation : all) {
+            long epochDay = bookReservation.getStartReservation().toEpochDay();
+            ResBookReservation resBookReservation = ResBookReservation.builder()
+                    .reservationId(bookReservation.getId())
+                    .bookId(bookReservation.getBook().getId())
+                    .userId(bookReservation.getUser().getId())
+                    .startReservationDate(bookReservation.getStartReservation())
+                    .endReservationDate(bookReservation.getEndReservation())
+                    .leftDays(bookReservation.getEndReservation().minusDays(epochDay).toEpochDay())
+                    .build();
+            bookReservationDTOList.add(resBookReservation);
+        }
+
+        ResPageable resPageable = ResPageable.builder()
+                .page(page)
+                .size(size)
+                .totalPage(all.getTotalPages())
+                .totalElements(all.getTotalElements())
+                .body(bookReservationDTOList)
+                .build();
+        return new ApiResponse(resPageable);
     }
 
 
