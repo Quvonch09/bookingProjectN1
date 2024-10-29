@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/book-reservation")
 @RequiredArgsConstructor
@@ -31,6 +33,20 @@ public class BookReservationController {
     @GetMapping("/checkReservation")
     public ResponseEntity<ApiResponse> checkBookNotification(@CurrentUser User user) {
         ApiResponse apiResponse = bookReservationService.checkNotification(user);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
+    @Operation(summary = "Userning ijaraga olgan kitoblarini search qilish")
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> search(@RequestParam(required = false) Long user,
+                                              @RequestParam(required = false) Long bookId,
+                                              @RequestParam(required = false)LocalDate startDate,
+                                              @RequestParam(required = false)LocalDate endDate,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
+        ApiResponse apiResponse = bookReservationService.search(user,bookId,startDate,endDate,page,size);
         return ResponseEntity.ok(apiResponse);
     }
 
