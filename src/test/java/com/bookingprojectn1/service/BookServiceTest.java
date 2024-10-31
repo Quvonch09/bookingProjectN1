@@ -8,18 +8,18 @@ import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.FileRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 class BookServiceTest {
@@ -32,7 +32,7 @@ class BookServiceTest {
     @Mock
     private LibraryRepository libraryRepository;
 
-    public ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -73,5 +73,11 @@ class BookServiceTest {
         ApiResponse apiResponse = bookService.addBook(reqBook);
 
         assertNotNull(apiResponse);
+
+        try {
+            System.out.println("Response: "+objectMapper.writeValueAsString(apiResponse.getData()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

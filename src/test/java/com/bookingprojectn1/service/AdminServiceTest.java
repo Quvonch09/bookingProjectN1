@@ -4,6 +4,7 @@ import com.bookingprojectn1.entity.enums.ERole;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.repository.LibraryRepository;
 import com.bookingprojectn1.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,5 +42,11 @@ class AdminServiceTest {
 
         ApiResponse apiResponse = adminService.countAll();
         assertNotNull(apiResponse);
+
+        try {
+            System.out.println("Response: "+objectMapper.writeValueAsString(apiResponse.getData()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
