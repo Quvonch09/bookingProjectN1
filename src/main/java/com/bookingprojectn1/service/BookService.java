@@ -29,7 +29,6 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
     private final FileRepository fileRepository;
-    private final FeedbackRepository feedbackRepository;
     private final LibraryRepository libraryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
