@@ -16,15 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByPhoneNumber(String phoneNumber);
 
-//    boolean existsByPhoneNumberAndIdNot(String phoneNumber, Long id);
-//
-//    int countByRoleAndEnabledTrue(ERole role);
-//
-//    User findByIdAndRoleAndEnabledTrue(Long id, ERole role);
-//
-//    List<User> findByRole(ERole role);
-
-
     @Query(value = """
                 SELECT u.*
                FROM users u
