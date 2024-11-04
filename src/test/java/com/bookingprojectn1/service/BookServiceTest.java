@@ -5,22 +5,30 @@ import com.bookingprojectn1.entity.File;
 import com.bookingprojectn1.entity.Library;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
+import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.FileRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 class BookServiceTest {
     @InjectMocks
@@ -128,6 +136,44 @@ class BookServiceTest {
 
         System.out.println("Response: "+objectMapper.writeValueAsString(oneBook.getData()));
     }
+
+
+    @Test
+    @SneakyThrows
+    void getAll() {
+        // Test ma'lumotlari
+        String title = "Nimadir";
+        String description = "Nimadir";
+        String author = "Quvonchbek";
+        Long libraryId = 1L;
+        int page = 0;
+        int size = 10;
+
+        // Test uchun kitob ro'yxati va sahifalash (pagination) yaratish
+        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300, null, null, null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400, null, null, null);
+        List<Book> bookList = new ArrayList<>();
+        bookList.add(book1);
+        bookList.add(book2);
+        Page<Book> bookPage = new PageImpl<>(bookList, PageRequest.of(page, size), bookList.size());
+
+        // Mock qilib metodni o'rnatish
+        when(bookRepository.searchBook(title, description, author, libraryId, PageRequest.of(page, size)))
+                .thenReturn(bookPage);
+
+//        // Mock qilish - o'rtacha reyting hisoblash
+//        when(bookService.calculateAverageRating(book1)).thenReturn(4.5);
+//        when(bookService.calculateAverageRating(book2)).thenReturn(4.0);
+
+        // Test method chaqirilishi
+        ApiResponse apiResponse = bookService.getAllBooks(title, description, author, libraryId, page, size);
+
+        // Tekshirish
+        assertNotNull(apiResponse);
+        System.out.println(objectMapper.writeValueAsString(apiResponse));
+
+    }
+
 
     @SneakyThrows
     @Test

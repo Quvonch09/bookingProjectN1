@@ -6,6 +6,7 @@ import com.bookingprojectn1.entity.Library;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.payload.res.ResBook;
+import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.BookRepository;
 import com.bookingprojectn1.repository.FileRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
@@ -19,10 +20,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;
@@ -155,6 +160,40 @@ public class BookControllerTest {
         when(bookService.getOneBook(id)).thenReturn(apiResponse);
 
         ResponseEntity<ApiResponse> response = bookController.getOneBook(id);
+        System.err.println(objectMapper.writeValueAsString(response));
+    }
+
+
+    @Test
+    @SneakyThrows
+    void getAll() {
+        String title = "Nimadir";
+        String description = "Nimadir";
+        String author = "Quvonchbek";
+        Long libraryId = 1L;
+        int page = 0;
+        int size = 10;
+        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300, null, null, null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400, null, null, null);
+        Book book3 = new Book(3L, "Nimadir2", "Nimadir3", "Boshqa", 400, null, null, null);
+        List<Book> bookList = new ArrayList<>();
+        bookList.add(book1);
+        bookList.add(book2);
+        bookList.add(book3);
+        Page<Book> bookPage = new PageImpl<>(bookList, PageRequest.of(page, size), bookList.size());
+        ResPageable resPageable = ResPageable.builder()
+                .page(page)
+                .size(size)
+                .totalPage(bookPage.getTotalPages())
+                .totalElements(bookPage.getTotalElements())
+                .body(bookPage)
+                .build();
+        ApiResponse apiResponse = new ApiResponse(resPageable);
+
+        when(bookRepository.searchBook(title,description,author,libraryId,PageRequest.of(page,size))).thenReturn(bookPage);
+        when(bookService.getAllBooks(title,description,author,libraryId,page,size)).thenReturn(apiResponse);
+
+        ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, libraryId, page, size);
         System.err.println(objectMapper.writeValueAsString(response));
     }
 
