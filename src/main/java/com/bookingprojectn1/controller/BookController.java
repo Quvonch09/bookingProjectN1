@@ -41,7 +41,7 @@ public class BookController {
     @Operation(summary = "ADMIN/LIBRARIAN/USER bitta bookni kurish")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @GetMapping("/getOne/{bookId}")
-    public ResponseEntity<ApiResponse> searchBook(@PathVariable Long bookId) {
+    public ResponseEntity<ApiResponse> getOneBook(@PathVariable Long bookId) {
         ApiResponse allBooks = bookService.getOneBook(bookId);
         return ResponseEntity.ok(allBooks);
     }
