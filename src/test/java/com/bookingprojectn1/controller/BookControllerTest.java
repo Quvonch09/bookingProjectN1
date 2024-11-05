@@ -19,6 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -32,23 +35,24 @@ import java.util.Optional;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class BookControllerTest {
 
     private ObjectMapper objectMapper;
 
-    @Mock
+    @MockBean
     private BookService bookService;
 
-    @Mock
+    @MockBean
     private FileRepository fileRepository;
 
-    @Mock
+    @MockBean
     private LibraryRepository libraryRepository;
 
-    @Mock
+    @MockBean
     private BookRepository bookRepository;
 
-    @InjectMocks
+    @Autowired
     private BookController bookController;
 
 
@@ -164,6 +168,7 @@ public class BookControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(roles = {"ADMIN"})
     void getAll() {
         String title = "Nimadir";
         String description = "Nimadir";
