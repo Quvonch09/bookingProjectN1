@@ -13,22 +13,26 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class AdminControllerTest {
 
     private ObjectMapper objectMapper;
-    @InjectMocks
+    @Autowired
     private AdminController adminController;
-    @Mock
+    @MockBean
     private AdminService adminService;
-    @Mock
+    @MockBean
     private UserRepository userRepository;
-    @Mock
+    @MockBean
     private LibraryRepository libraryRepository;
 
     @BeforeEach

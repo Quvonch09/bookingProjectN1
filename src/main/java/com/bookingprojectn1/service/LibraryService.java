@@ -51,7 +51,7 @@ public class LibraryService {
                 .file(file!= null ? file : null)
                 .build();
         libraryRepository.save(library);
-        return new ApiResponse("Successfully saved feedback");
+        return new ApiResponse("Successfully saved library");
     }
 
 
