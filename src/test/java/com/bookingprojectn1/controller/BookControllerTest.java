@@ -19,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,6 @@ import java.util.Optional;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 public class BookControllerTest {
 
     private ObjectMapper objectMapper;
@@ -97,7 +95,7 @@ public class BookControllerTest {
 
         ResponseEntity<ApiResponse> response = bookController.addBook(reqBook);
 
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
     }
 
 
@@ -120,7 +118,7 @@ public class BookControllerTest {
 
         ResponseEntity<ApiResponse> response = bookController.addBook(reqBook);
 
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
 
     }
 
@@ -160,7 +158,7 @@ public class BookControllerTest {
         when(bookService.getOneBook(id)).thenReturn(apiResponse);
 
         ResponseEntity<ApiResponse> response = bookController.getOneBook(id);
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
     }
 
 
@@ -194,7 +192,7 @@ public class BookControllerTest {
         when(bookService.getAllBooks(title,description,author,libraryId,page,size)).thenReturn(apiResponse);
 
         ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, libraryId, page, size);
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
     }
 
 
@@ -230,7 +228,7 @@ public class BookControllerTest {
         when(bookService.updateBook(id,reqBook)).thenReturn(new ApiResponse("Successfully updated Book"));
 
         ResponseEntity<ApiResponse> response = bookController.updateBook(id, reqBook);
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
     }
 
 
@@ -255,7 +253,7 @@ public class BookControllerTest {
         when(bookService.deleteBook(id)).thenReturn(new ApiResponse("Successfully deleted Book"));
 
         ResponseEntity<ApiResponse> response = bookController.deleteBook(id);
-        System.err.println(objectMapper.writeValueAsString(response));
+        System.out.println(objectMapper.writeValueAsString(response));
     }
 }
 
