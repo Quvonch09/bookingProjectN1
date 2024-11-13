@@ -28,9 +28,9 @@ public class FileService {
     private final FileRepository videoFileRepository;
 
     //local uchun
-    private static final Path root= Paths.get("src/main/resources");
+//    private static final Path root= Paths.get("src/main/resources");
     //server uchun
-//    private static final Path root= Paths.get("/root");
+    private static final Path root= Paths.get("/root");
 
 
     public ApiResponse saveFile(MultipartFile file)
