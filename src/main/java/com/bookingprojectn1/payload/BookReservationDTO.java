@@ -14,5 +14,6 @@ import java.time.LocalDate;
 public class BookReservationDTO {
     private Long bookId;
     private Long userId;
+    private LocalDate startDate;
     private Long duration;
 }
