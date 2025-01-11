@@ -54,14 +54,14 @@ public class BookOrderService {
                 .book(book)
                 .user(user)
                 .startReservation(bookReservationDTO.getStartDate())
-                .endReservation(LocalDate.now().plusDays(bookReservationDTO.getDuration()))
+                .endReservation(bookReservationDTO.getStartDate().plusDays(bookReservationDTO.getDuration()))
                 .build();
         bookReservationRepository.save(reservation);
 
         notificationService.saveNotification(
                 user,
                 "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
-                "Sizga " + reservation.getEndReservation() + " kunigacha " +
+                "Siz " + reservation.getEndReservation() + " kunigacha " +
                         book.getTitle() + " nomli kitobi band qilindi!",
                 0L,
                 false

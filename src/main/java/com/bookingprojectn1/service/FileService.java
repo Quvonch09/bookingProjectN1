@@ -161,6 +161,9 @@ public class FileService {
             return "img";
         } else if (checkFile(filename)) {
             return "files";
+        } else if (filename.endsWith(".MP4") || filename.endsWith(".mp4") || filename.endsWith(".avi") ||
+                    filename.endsWith(".mkv")) {
+            return "videos";
         }
         return null;
     }
