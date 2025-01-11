@@ -29,20 +29,20 @@ public class LibraryService {
     private final UserRepository userRepository;
 
     public ApiResponse saveLibrary(ReqLibrary reqLibrary) {
-        boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getName());
+        boolean b = libraryRepository.existsByNameIgnoreCase(reqLibrary.getLibraryName());
         if (b) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Library"));
         }
 
         File file = fileRepository.findById(reqLibrary.getFileId()).orElse(null);
 
-        User user = userRepository.findByUserName(reqLibrary.getUserName()).orElse(null);
+        User user = userRepository.findByUserName(reqLibrary.getOwner()).orElse(null);
         if (user == null) {
             user = new User();
         }
 
         Library library = Library.builder()
-                .name(reqLibrary.getName())
+                .name(reqLibrary.getLibraryName())
                 .lat(reqLibrary.getLat())
                 .lng(reqLibrary.getLng())
                 .owner(user)
@@ -68,7 +68,7 @@ public class LibraryService {
         for (Library library : libraries) {
             ReqLibrary reqLibrary = ReqLibrary.builder()
                     .id(library.getId())
-                    .name(library.getName())
+                    .libraryName(library.getName())
                     .lat(library.getLat())
                     .lng(library.getLng())
                     .fileId(library.getFile() != null ? library.getFile().getId():null)
@@ -128,13 +128,13 @@ public class LibraryService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        User user = userRepository.findByUserName(reqLibrary.getUserName()).orElse(null);
+        User user = userRepository.findByUserName(reqLibrary.getOwner()).orElse(null);
         if (user == null) {
             user = new User();
         }
 
         library.setId(id);
-        library.setName(reqLibrary.getName());
+        library.setName(reqLibrary.getLibraryName());
         library.setLat(reqLibrary.getLat());
         library.setLng(reqLibrary.getLng());
         library.setOwner(user);

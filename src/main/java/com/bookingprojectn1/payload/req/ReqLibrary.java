@@ -11,8 +11,8 @@ import lombok.*;
 public class ReqLibrary {
     @Schema(hidden = true)
     private Long id;
-    private String name;
-    private String userName;
+    private String libraryName;
+    private String owner;
     private double lat;
     private double lng;
     private Long fileId;

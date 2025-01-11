@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class LibraryController {
     private final LibraryService libraryService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Admin library qo'shish")
     @PostMapping
     public ResponseEntity<ApiResponse> saveLibrary(@RequestBody ReqLibrary reqLibrary) {
