@@ -41,10 +41,16 @@ public class UserService {
     }
 
 
-    public ApiResponse updateUser(Long userId,UserDTO user){
-        User user1 = userRepository.findById(userId).orElse(null);
-        if(user1 == null){
-            return new ApiResponse(ResponseError.NOTFOUND("User"));
+    public ApiResponse updateUser(Long userId,UserDTO user, User currentUser){
+        User user1;
+
+        if (userId == null){
+            user1 = currentUser;
+        }else {
+            user1 = userRepository.findById(userId).orElse(null);
+            if(user1 == null){
+                return new ApiResponse(ResponseError.NOTFOUND("User"));
+            }
         }
 
         user1.setFirstName(user.getFirstName());

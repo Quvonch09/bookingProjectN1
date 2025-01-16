@@ -38,7 +38,7 @@ public class LibraryService {
 
         User user = userRepository.findByUserName(reqLibrary.getOwner()).orElse(null);
         if (user == null) {
-            user = new User();
+            return new ApiResponse(ResponseError.NOTFOUND("Kechirasiz! Owner "));
         }
 
         Library library = Library.builder()

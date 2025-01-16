@@ -8,8 +8,7 @@ public record NotificationDTO(
         String content,
         boolean read,
         LocalDateTime create,
-        Long userId,
-        Long fileId
+        Long userId
 ) {
 }
 

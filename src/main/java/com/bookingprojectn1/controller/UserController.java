@@ -30,8 +30,10 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Hamma uzini profili update qilish")
     @PutMapping("/updateUser/{userId}")
-    public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody UserDTO user){
-        ApiResponse apiResponse = userService.updateUser(userId, user);
+    public ResponseEntity<ApiResponse> updateUser(@RequestParam(required = false) Long userId,
+                                                  @RequestBody UserDTO user,
+                                                  @CurrentUser User user1){
+        ApiResponse apiResponse = userService.updateUser(userId, user, user1);
         return ResponseEntity.ok(apiResponse);
     }
 

@@ -63,7 +63,6 @@ public class BookOrderService {
                 "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
                 "Siz " + reservation.getEndReservation() + " kunigacha " +
                         book.getTitle() + " nomli kitobi band qilindi!",
-                0L,
                 false
         );
 
@@ -84,7 +83,6 @@ public class BookOrderService {
             user,
                 "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
                 "Sizning ijaraga olgan kitoblarning muddati tugadi ",
-                0L,
                 false
         );
 
