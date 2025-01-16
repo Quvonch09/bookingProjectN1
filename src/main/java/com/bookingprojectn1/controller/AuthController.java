@@ -42,7 +42,7 @@ public class AuthController {
 
 
     @Operation(summary = "Admin yangi user qoshadi")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("/admin/save-user")
     public ResponseEntity<ApiResponse> adminSaveTeacher(@Valid @RequestBody AuthRegister auth,
                                                         @RequestParam ERole eRole){

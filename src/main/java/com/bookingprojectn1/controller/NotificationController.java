@@ -22,21 +22,21 @@ public class NotificationController {
     private final NotificationService notificationService;
 
 
-    @PreAuthorize("hasAnyRole('ROLE_MASTER','ROLE_USER','ROLE_BARBER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN','ROLE_USER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Barcha roldagilar oziga kelgan bildirishnomalarni koradi, admin ham")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllNotifications(@CurrentUser User user) {
         return ResponseEntity.ok(notificationService.getNotifications(user));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MASTER','ROLE_USER','ROLE_BARBER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN','ROLE_USER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Barcha roldagilar oziga kelgan bildirishnomalarni sonini koradi")
     @GetMapping("/count")
     public ResponseEntity<ApiResponse> countNotifications(@CurrentUser User user) {
         return ResponseEntity.ok(notificationService.getCountNotification(user));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MASTER','ROLE_USER','ROLE_BARBER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN','ROLE_USER', 'ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @Operation(summary = "Barcha roldagilar oziga kelgan bildirishnomalarni oqilgan qilishi")
     @PostMapping("/read")
     public ResponseEntity<ApiResponse> readNotifications(@RequestBody IdList idList) {

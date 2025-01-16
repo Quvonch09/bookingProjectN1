@@ -41,7 +41,6 @@ public class AuthService {
                 user,
                 "Hurmatli" + user.getFirstName() + " " + user.getLastName() + "!",
                 "Siz bizning tizimimizga kirdingiz. Agar tizimda muammolar bo'lsa iltimos biz bilan bog'laning",
-                null,
                 false
         );
         return new ApiResponse(ResponseError.PASSWORD_DID_NOT_MATCH());
@@ -56,12 +55,11 @@ public class AuthService {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Phone number"));
         }
 
-        saveUser(auth, ERole.ROLE_USER);
+        User user = saveUser(auth, ERole.ROLE_USER);
         notificationService.saveNotification(
-                byPhoneNumber,
-                "Hurmatli" + byPhoneNumber.getFirstName() + " " + byPhoneNumber.getLastName() + "!",
+                user,
+                "Hurmatli" + user.getFirstName() + " " + user.getLastName() + "!",
                 "Siz muvaffaqqiyatli ro'yhatdan o'tdingiz. Agar tizimda muammolar bo'lsa iltimos biz bilan bog'laning",
-                null,
                 false
         );
         return new ApiResponse("Success");
@@ -96,7 +94,7 @@ public class AuthService {
     }
 
 
-    private void saveUser(AuthRegister auth, ERole role)
+    private User saveUser(AuthRegister auth, ERole role)
     {
         User user = User.builder()
                 .firstName(auth.getFirstName())
@@ -111,7 +109,7 @@ public class AuthService {
                 .credentialsNonExpired(true)
                 .build();
 
-        userRepository.save(user);
-
+        User save = userRepository.save(user);
+        return save;
     }
 }

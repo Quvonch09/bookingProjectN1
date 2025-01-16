@@ -25,8 +25,8 @@ public class BookController {
     }
 
 
-    @Operation(summary = "ADMIN/LIBRARIAN/USER search book")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @Operation(summary = "Barcha rollar search book")
+    @PreAuthorize("hasAnyRole('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @GetMapping("/search/book")
     public ResponseEntity<ApiResponse> searchBook(@RequestParam(value = "title", required = false) String title,
                                                   @RequestParam(value = "description", required = false) String description,
@@ -38,8 +38,8 @@ public class BookController {
         return ResponseEntity.ok(allBooks);
     }
 
-    @Operation(summary = "ADMIN/LIBRARIAN/USER bitta bookni kurish")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @Operation(summary = "Barcha rollar bitta bookni kurish")
+    @PreAuthorize("hasAnyRole('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @GetMapping("/getOne/{bookId}")
     public ResponseEntity<ApiResponse> getOneBook(@PathVariable Long bookId) {
         ApiResponse allBooks = bookService.getOneBook(bookId);
@@ -67,8 +67,8 @@ public class BookController {
 
 
 
-    @Operation(summary = "ADMIN/LIBRARIAN/USER booklarning reytingini kurish")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
+    @Operation(summary = "Barcha rollar booklarning reytingini kurish")
+    @PreAuthorize("hasAnyRole('ROLE_SUPER_ADMIN','ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_USER')")
     @GetMapping("/ratingBooks")
     public ResponseEntity<ApiResponse> getRatingBook(){
         ApiResponse apiResponse = bookService.rateBook();

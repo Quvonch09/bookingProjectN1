@@ -68,7 +68,6 @@ public class NotificationService {
                 user,
                 resNotification.getTitle(),
                 resNotification.getContent(),
-                file != null ? file.getId() : null,
                 false
         ));
 
@@ -82,7 +81,7 @@ public class NotificationService {
 
         String title = "Foydalanuvchi: " + contact.getName() + " Raqami: " + contact.getPhone();
         String content = "Xabar: " + contact.getMessage();
-        saveNotification(admin, title, content, null, true);
+        saveNotification(admin, title, content, true);
 
         return new ApiResponse("Success");
     }
@@ -108,7 +107,7 @@ public class NotificationService {
 
         String title = "Bildirishnoma!";
         String content = "( " + user.getFirstName() + " " + user.getLastName() + " ) foydalanuvchi sizdan shedu tizimga kirish uchun ruxsat so'ramozda . . .";
-        saveNotification(admin, title, content, null, false);
+        saveNotification(admin, title, content,  false);
 
         return new ApiResponse("Success");
     }
@@ -123,14 +122,13 @@ public class NotificationService {
     }
 
 
-    public void saveNotification(User user, String title, String content, Long fileId, boolean contact) {
+    public void saveNotification(User user, String title, String content, boolean contact) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setContent(content);
         notification.setRead(false);
         notification.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Tashkent")));
         notification.setUser(user);
-        notification.setFile(fileRepository.findById(fileId).orElse(null));
         notification.setContact(contact);
         notificationRepository.save(notification);
     }
@@ -142,8 +140,7 @@ public class NotificationService {
                 notification.getContent(),
                 notification.isRead(),
                 notification.getCreatedAt(),
-                notification.getUser().getId(),
-                Optional.ofNullable(notification.getFile()).map(File::getId).orElse(0L)
+                notification.getUser().getId()
         );
     }
 }
