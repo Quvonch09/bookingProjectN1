@@ -1,5 +1,6 @@
 package com.bookingprojectn1.controller;
 
+import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.service.BookService;
@@ -32,9 +33,11 @@ public class BookController {
                                                   @RequestParam(value = "description", required = false) String description,
                                                   @RequestParam(value = "author", required = false) String author,
                                                   @RequestParam(value = "libraryId", required = false) Long libraryId,
+                                                  @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                                  @RequestParam(value = "bookStatus") BookStatus bookStatus,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title,description, author,libraryId, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title,description, author,libraryId,categoryId,bookStatus, page, size);
         return ResponseEntity.ok(allBooks);
     }
 
@@ -50,8 +53,21 @@ public class BookController {
     @Operation(summary = "ADMIN/LIBRARIAN book update qilish")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
     @PutMapping("/{bookId}")
-    public ResponseEntity<ApiResponse> updateBook(@PathVariable Long bookId,@RequestBody ReqBook book) {
-        ApiResponse apiResponse = bookService.updateBook(bookId, book);
+    public ResponseEntity<ApiResponse> updateBook(@PathVariable Long bookId,
+                                                  @RequestBody ReqBook book,
+                                                  @RequestParam BookStatus status)  {
+        ApiResponse apiResponse = bookService.updateBook(bookId, book,status);
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+
+    @Operation(summary = "ADMIN/LIBRARIAN book status update qilish")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @PutMapping("/updateStatus/{bookId}")
+    public ResponseEntity<ApiResponse> updateBookStatus(@PathVariable Long bookId,
+                                                  @RequestParam BookStatus status)  {
+        ApiResponse apiResponse = bookService.updateStatusBook(bookId,status);
         return ResponseEntity.ok(apiResponse);
     }
 

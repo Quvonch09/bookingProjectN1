@@ -60,9 +60,9 @@ class LibraryServiceTest {
                 1L,"Kutubxona",1234,1234,new User(),new ArrayList<>(),new ArrayList<>(),new File()
         );
 
-        when(libraryRepository.existsByNameIgnoreCase(reqLibrary.getName())).thenReturn(false);
+        when(libraryRepository.existsByNameIgnoreCase(reqLibrary.getLibraryName())).thenReturn(false);
         when(fileRepository.findById(reqLibrary.getFileId())).thenReturn(Optional.of(new File()));
-        when(userRepository.findByUserName(reqLibrary.getUserName())).thenReturn(Optional.of(new User()));
+        when(userRepository.findByUserName(reqLibrary.getOwner())).thenReturn(Optional.of(new User()));
         when(libraryRepository.save(library)).thenReturn(library);
 
         ApiResponse apiResponse = libraryService.saveLibrary(reqLibrary);

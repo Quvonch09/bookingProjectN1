@@ -19,5 +19,7 @@ public class ResBook {
     private Integer pageCount;
     private Long fileId;
     private Long libraryId;
+    private Long categoryId;
+    private String bookStatus;
     private List<FeedbackDTO> feedBackBook;
 }
