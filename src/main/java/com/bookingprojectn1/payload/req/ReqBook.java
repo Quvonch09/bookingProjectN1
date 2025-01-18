@@ -19,4 +19,7 @@ public class ReqBook {
     private Integer pageCount;
     private Long fileId;
     private Long libraryId;
+    private Long categoryId;
+    @Schema(hidden = true)
+    private String bookStatus;
 }

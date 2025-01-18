@@ -1,5 +1,6 @@
 package com.bookingprojectn1.entity;
 
+import com.bookingprojectn1.entity.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +28,8 @@ public class Book {
     private List<Feedback> feedbackList;
     @ManyToOne
     private Library library;
+    @Enumerated(EnumType.STRING)
+    private BookStatus status;
+    @ManyToOne
+    private Category category;
 }

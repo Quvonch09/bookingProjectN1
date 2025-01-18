@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/book-reservation")
+@RequestMapping("/book-order")
 @RequiredArgsConstructor
 public class BookOrderController {
     private final BookOrderService bookOrderService;

@@ -1,9 +1,7 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.Feedback;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.Library;
+import com.bookingprojectn1.entity.*;
+import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
@@ -11,6 +9,7 @@ import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.payload.res.ResBook;
 import com.bookingprojectn1.payload.res.ResPageable;
 import com.bookingprojectn1.repository.BookRepository;
+import com.bookingprojectn1.repository.CategoryRepository;
 import com.bookingprojectn1.repository.FileRepository;
 import com.bookingprojectn1.repository.LibraryRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +28,24 @@ public class BookService {
     private final BookRepository bookRepository;
     private final FileRepository fileRepository;
     private final LibraryRepository libraryRepository;
+    private final CategoryRepository categoryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
+        boolean b = bookRepository.existsByTitleIgnoreCase(reqBook.getTitle());
+        if (b){
+            return new ApiResponse(ResponseError.ALREADY_EXIST("Bu nomli kitob"));
+        }
+
         File file = fileRepository.findById(reqBook.getFileId()).orElse(null);
 
         Library library = libraryRepository.findById(reqBook.getLibraryId()).orElse(null);
         if (library == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
+        }
+
+        Category category = categoryRepository.findById(reqBook.getCategoryId()).orElse(null);
+        if (category == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("Category"));
         }
 
         Book book = Book.builder()
@@ -46,6 +56,8 @@ public class BookService {
                 .file(file!=null ? file : null)
                 .feedbackList(null)
                 .library(library)
+                .category(category)
+                .status(BookStatus.BORROWED)
                 .build();
         bookRepository.save(book);
 
@@ -53,9 +65,9 @@ public class BookService {
     }
 
 
-    public ApiResponse getAllBooks(String title,String description,String author,Long libraryId,int page, int size){
+    public ApiResponse getAllBooks(String title,String description,String author,Long libraryId,Long categoryId,BookStatus bookStatus,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,description,author,libraryId,pageRequest);
+        Page<Book> books = bookRepository.searchBook(title,description,author,libraryId,categoryId,bookStatus.name(),pageRequest);
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
             double v = calculateAverageRating(book);
@@ -98,6 +110,8 @@ public class BookService {
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile() != null ? book.getFile().getId() : null)
                 .libraryId(book.getLibrary().getId())
+                .categoryId(book.getCategory().getId())
+                .bookStatus(book.getStatus().name())
                 .feedBackBook(feedBackBookDTOList)
                 .build();
 
@@ -105,10 +119,20 @@ public class BookService {
     }
 
 
-    public ApiResponse updateBook(Long bookId,ReqBook reqBook) {
+    public ApiResponse updateBook(Long bookId,ReqBook reqBook, BookStatus status) {
         Book book = bookRepository.findById(bookId).orElse(null);
         if (book == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Book"));
+        }
+
+        Library library = libraryRepository.findById(reqBook.getLibraryId()).orElse(null);
+        if (library == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("Library"));
+        }
+
+        Category category = categoryRepository.findById(reqBook.getCategoryId()).orElse(null);
+        if (category == null) {
+            return new ApiResponse(ResponseError.NOTFOUND("Category"));
         }
 
         book.setTitle(reqBook.getTitle());
@@ -116,9 +140,24 @@ public class BookService {
         book.setAuthor(reqBook.getAuthor());
         book.setPageCount(reqBook.getPageCount());
         book.setFile(fileRepository.findById(reqBook.getFileId()).orElse(null));
-        book.setLibrary(libraryRepository.findById(reqBook.getLibraryId()).orElse(null));
+        book.setLibrary(library);
+        book.setCategory(category);
+        book.setStatus(status);
         bookRepository.save(book);
         return new ApiResponse("Successfully updated Book");
+    }
+
+
+
+    public ApiResponse updateStatusBook(Long bookId, BookStatus status)
+    {
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (book == null){
+            return new ApiResponse(ResponseError.NOTFOUND("Book"));
+        }
+        book.setStatus(status);
+        bookRepository.save(book);
+        return new ApiResponse("Successfully updated book status");
     }
 
 
@@ -179,6 +218,8 @@ public class BookService {
                 .pageCount(book.getPageCount())
                 .fileId(book.getFile()!=null ? book.getFile().getId():null)
                 .libraryId(book.getLibrary()!= null ? book.getLibrary().getId():null)
+                .categoryId(book.getCategory() != null ? book.getCategory().getId():null)
+                .bookStatus(book.getStatus().name())
                 .build();
     }
 

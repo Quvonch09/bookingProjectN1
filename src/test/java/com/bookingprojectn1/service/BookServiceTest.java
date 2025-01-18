@@ -1,8 +1,10 @@
 package com.bookingprojectn1.service;
 
 import com.bookingprojectn1.entity.Book;
+import com.bookingprojectn1.entity.Category;
 import com.bookingprojectn1.entity.File;
 import com.bookingprojectn1.entity.Library;
+import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.repository.BookRepository;
@@ -60,7 +62,9 @@ class BookServiceTest {
                 "Quvonchbek",
                 10,
                 1L,
-                1L
+                1L,
+                1L,
+                "BOOKED"
         );
 
         Book book = new Book(
@@ -71,7 +75,9 @@ class BookServiceTest {
                 10,
                 new File(),
                 new ArrayList<>(),
-                new Library()
+                new Library(),
+                BookStatus.BOOKED,
+                new Category()
         );
 
 
@@ -97,7 +103,9 @@ class BookServiceTest {
                 "Quvonchbek",
                 10,
                 1L,
-                1L
+                1L,
+                1L,
+                "BOOKED"
         );
 
         Long bookId = 1L;
@@ -105,7 +113,7 @@ class BookServiceTest {
         when(bookRepository.findById(reqBook.getBookId())).thenReturn(Optional.of(new Book()));
         when(fileRepository.findById(reqBook.getFileId())).thenReturn(Optional.of(new File()));
 
-        ApiResponse apiResponse = bookService.updateBook(bookId, reqBook);
+        ApiResponse apiResponse = bookService.updateBook(bookId, reqBook, BookStatus.BOOKED);
         assertNotNull(apiResponse);
 
         System.out.println("Response: "+objectMapper.writeValueAsString(apiResponse.getData()));
@@ -125,7 +133,9 @@ class BookServiceTest {
                 10,
                 new File(),
                 new ArrayList<>(),
-                new Library()
+                new Library(),
+                BookStatus.BOOKED,
+                new Category()
         );
 
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
@@ -146,19 +156,20 @@ class BookServiceTest {
         String description = "Nimadir";
         String author = "Quvonchbek";
         Long libraryId = 1L;
+        Long categoryId = 1L;
         int page = 0;
         int size = 10;
 
         // Test uchun kitob ro'yxati va sahifalash (pagination) yaratish
-        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300, null, null, null);
-        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400, null, null, null);
+        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300, null, null, null,BookStatus.BOOKED, null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400, null, null, null,BookStatus.BOOKED,null);
         List<Book> bookList = new ArrayList<>();
         bookList.add(book1);
         bookList.add(book2);
         Page<Book> bookPage = new PageImpl<>(bookList, PageRequest.of(page, size), bookList.size());
 
         // Mock qilib metodni o'rnatish
-        when(bookRepository.searchBook(title, description, author, libraryId, PageRequest.of(page, size)))
+        when(bookRepository.searchBook(title, description, author, libraryId,categoryId,BookStatus.BOOKED.name(), PageRequest.of(page, size)))
                 .thenReturn(bookPage);
 
 //        // Mock qilish - o'rtacha reyting hisoblash
@@ -166,7 +177,7 @@ class BookServiceTest {
 //        when(bookService.calculateAverageRating(book2)).thenReturn(4.0);
 
         // Test method chaqirilishi
-        ApiResponse apiResponse = bookService.getAllBooks(title, description, author, libraryId, page, size);
+        ApiResponse apiResponse = bookService.getAllBooks(title, description, author, libraryId, categoryId,BookStatus.BOOKED,page, size);
 
         // Tekshirish
         assertNotNull(apiResponse);
@@ -188,7 +199,9 @@ class BookServiceTest {
                 10,
                 new File(),
                 new ArrayList<>(),
-                new Library()
+                new Library(),
+                BookStatus.BOOKED,
+                new Category()
         );
 
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
