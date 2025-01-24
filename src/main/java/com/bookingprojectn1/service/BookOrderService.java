@@ -4,6 +4,7 @@ import com.bookingprojectn1.entity.Book;
 import com.bookingprojectn1.entity.BookOrder;
 import com.bookingprojectn1.entity.Followed;
 import com.bookingprojectn1.entity.User;
+import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.BookReservationDTO;
 import com.bookingprojectn1.payload.ResponseError;
@@ -58,6 +59,9 @@ public class BookOrderService {
                 .build();
         bookReservationRepository.save(reservation);
 
+        book.setStatus(BookStatus.BOOKED);
+        bookRepository.save(book);
+
         notificationService.saveNotification(
                 user,
                 "Hurmatli " + user.getFirstName() + " " + user.getLastName() + "!",
@@ -76,6 +80,12 @@ public class BookOrderService {
         List<BookOrder> allByUser = bookReservationRepository.findAllByUser(user.getId(), today);
         if (allByUser.isEmpty()) {
             return new ApiResponse(ResponseError.NOTFOUND("Muddati tugagan kitoblar"));
+        }
+
+        for (BookOrder bookOrder : allByUser) {
+            Book book = bookOrder.getBook();
+            book.setStatus(BookStatus.BORROWED);
+            bookRepository.save(book); 
         }
 
         // Notification yuborish
