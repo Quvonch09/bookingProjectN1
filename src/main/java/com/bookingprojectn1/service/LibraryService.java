@@ -115,6 +115,7 @@ public class LibraryService {
                 .lat(library.getLat())
                 .lng(library.getLng())
                 .ownerId(library.getOwner().getId())
+                .favouriteCount(library.getFavouriteList().size())
                 .fileId(library.getFile() != null ? library.getFile().getId():null)
                 .feedBackLibraryDTOList(feedBackLibraryDTOS)
                 .build();

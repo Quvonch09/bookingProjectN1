@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/feedback")
+@RequestMapping("/api/feedback")
 @RequiredArgsConstructor
 public class FeedbackController {
     private final FeedbackService feedbackService;

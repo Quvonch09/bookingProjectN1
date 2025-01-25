@@ -20,6 +20,7 @@ public class PaymentDTO {
     private LocalDate payDate;
     private String payType;
     private Long payerId;
+    private Long libraryId;
     @Schema(hidden = true)
     private LocalDateTime createDate;
     @Schema(hidden = true)

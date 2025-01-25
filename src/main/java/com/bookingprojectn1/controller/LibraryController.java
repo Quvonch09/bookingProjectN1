@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/library")
+@RequestMapping("/api/library")
 @RequiredArgsConstructor
 @CrossOrigin
 public class LibraryController {

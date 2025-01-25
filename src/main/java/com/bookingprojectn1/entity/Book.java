@@ -23,9 +23,13 @@ public class Book {
     private String author;
     private Integer pageCount;
     @OneToOne
-    private File file;
+    private File pdf;
+    @OneToOne
+    private File bookImg;
     @ManyToMany
     private List<Feedback> feedbackList;
+    @ManyToMany
+    private List<Favourite> favouriteList;
     @ManyToOne
     private Library library;
     @Enumerated(EnumType.STRING)
