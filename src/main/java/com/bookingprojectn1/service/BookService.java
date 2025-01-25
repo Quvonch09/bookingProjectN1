@@ -36,7 +36,8 @@ public class BookService {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Bu nomli kitob"));
         }
 
-        File file = fileRepository.findById(reqBook.getFileId()).orElse(null);
+        File pdf = fileRepository.findById(reqBook.getFileId()).orElse(null);
+        File bookImg = fileRepository.findById(reqBook.getBookImgId()).orElse(null);
 
         Library library = libraryRepository.findById(reqBook.getLibraryId()).orElse(null);
         if (library == null) {
@@ -53,7 +54,8 @@ public class BookService {
                 .description(reqBook.getDescription())
                 .author(reqBook.getAuthor())
                 .pageCount(reqBook.getPageCount())
-                .file(file!=null ? file : null)
+                .pdf(pdf!=null ? pdf : null)
+                .bookImg(bookImg!=null ? bookImg : null)
                 .feedbackList(null)
                 .library(library)
                 .category(category)
@@ -108,10 +110,12 @@ public class BookService {
                 .rate(Math.round(calculateAverageRating(book)))
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
-                .fileId(book.getFile() != null ? book.getFile().getId() : null)
+                .pdfId(book.getPdf() != null ? book.getPdf().getId() : null)
+                .bookImgId(book.getBookImg() != null ? book.getBookImg().getId() : null)
                 .libraryId(book.getLibrary().getId())
                 .categoryId(book.getCategory().getId())
                 .bookStatus(book.getStatus().name())
+                .favouriteCount(book.getFavouriteList().size())
                 .feedBackBook(feedBackBookDTOList)
                 .build();
 
@@ -139,7 +143,8 @@ public class BookService {
         book.setDescription(reqBook.getDescription());
         book.setAuthor(reqBook.getAuthor());
         book.setPageCount(reqBook.getPageCount());
-        book.setFile(fileRepository.findById(reqBook.getFileId()).orElse(null));
+        book.setPdf(fileRepository.findById(reqBook.getFileId()).orElse(null));
+        book.setBookImg(fileRepository.findById(reqBook.getBookImgId()).orElse(null));
         book.setLibrary(library);
         book.setCategory(category);
         book.setStatus(status);
@@ -216,7 +221,8 @@ public class BookService {
                 .rate(Math.round(rate))
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
-                .fileId(book.getFile()!=null ? book.getFile().getId():null)
+                .fileId(book.getPdf()!=null ? book.getPdf().getId():null)
+                .bookImgId(book.getBookImg()!=null ? book.getBookImg().getId():null)
                 .libraryId(book.getLibrary()!= null ? book.getLibrary().getId():null)
                 .categoryId(book.getCategory() != null ? book.getCategory().getId():null)
                 .bookStatus(book.getStatus().name())

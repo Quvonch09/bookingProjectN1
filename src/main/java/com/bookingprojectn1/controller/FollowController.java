@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/followed")
+@RequestMapping("/api/followed")
 @RequiredArgsConstructor
 public class FollowController {
     private final FollowService followService;

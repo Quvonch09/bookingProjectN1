@@ -25,6 +25,9 @@ public class Library {
     private List<Feedback> feedbackList;
 
     @ManyToMany
+    private List<Favourite> favouriteList;
+
+    @ManyToMany
     private List<Followed> followedList;
 
     @OneToOne

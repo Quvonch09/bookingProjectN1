@@ -2,10 +2,8 @@ package com.bookingprojectn1.security;
 
 public class SecurityConstants {
     public static final String[] WHITE_LIST = {
-            "/auth/login",
-            "/auth/register",
-            "/auth/forgot-password",
-            "/file/**",
+            "/api/auth/**",
+            "/api/file/**",
             "/category/list",
             "notification/contact",
             "/swagger-ui/**",

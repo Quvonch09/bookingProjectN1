@@ -17,9 +17,11 @@ public class ResBook {
     private Long rate;
     private String author;
     private Integer pageCount;
-    private Long fileId;
+    private Long pdfId;
+    private Long bookImgId;
     private Long libraryId;
     private Long categoryId;
     private String bookStatus;
+    private Integer favouriteCount;
     private List<FeedbackDTO> feedBackBook;
 }

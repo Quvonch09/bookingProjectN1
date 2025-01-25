@@ -18,6 +18,7 @@ public class ReqBook {
     private String author;
     private Integer pageCount;
     private Long fileId;
+    private Long bookImgId;
     private Long libraryId;
     private Long categoryId;
     @Schema(hidden = true)

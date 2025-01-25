@@ -17,5 +17,6 @@ public class ResLibrary {
     private double lat;
     private double lng;
     private Long fileId;
+    private Integer favouriteCount;
     private List<FeedbackDTO> feedBackLibraryDTOList;
 }

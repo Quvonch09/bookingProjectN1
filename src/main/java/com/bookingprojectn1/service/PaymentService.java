@@ -1,11 +1,13 @@
 package com.bookingprojectn1.service;
 
+import com.bookingprojectn1.entity.Library;
 import com.bookingprojectn1.entity.Payment;
 import com.bookingprojectn1.entity.User;
 import com.bookingprojectn1.entity.enums.PayType;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.PaymentDTO;
 import com.bookingprojectn1.payload.ResponseError;
+import com.bookingprojectn1.repository.LibraryRepository;
 import com.bookingprojectn1.repository.PaymentRepository;
 import com.bookingprojectn1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
+    private final LibraryRepository libraryRepository;
 
     public ApiResponse savePayment(PaymentDTO paymentDTO)
     {
@@ -28,10 +31,13 @@ public class PaymentService {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
 
+        Library library = libraryRepository.findById(paymentDTO.getLibraryId()).orElse(null);
+
         Payment payment = Payment.builder()
                 .payer(user)
                 .payType(PayType.valueOf(paymentDTO.getPayType()))
                 .paySum(paymentDTO.getPaySum())
+                .library(library)
                 .payDate(paymentDTO.getPayDate())
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -53,6 +59,7 @@ public class PaymentService {
                     .updateDate(payment.getUpdatedAt())
                     .payerId(payment.getPayer().getId())
                     .payType(payment.getPayType().name())
+                    .libraryId(payment.getLibrary().getId())
                     .build();
             paymentDTOList.add(paymentDTO);
         }
@@ -76,6 +83,7 @@ public class PaymentService {
                 .updateDate(payment.getUpdatedAt())
                 .payerId(payment.getPayer().getId())
                 .payType(payment.getPayType().name())
+                .libraryId(payment.getLibrary().getId())
                 .build();
 
         return new ApiResponse(paymentDTO);
