@@ -3,6 +3,7 @@ package com.bookingprojectn1.service;
 import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.FavouriteDTO;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.req.ReqBook;
@@ -93,6 +94,7 @@ public class BookService {
         }
 
         List<FeedbackDTO> feedBackBookDTOList = new ArrayList<>();
+        List<FavouriteDTO> favouriteDTOList = new ArrayList<>();
         for (Feedback feedBackForBook : book.getFeedbackList()) {
             FeedbackDTO feedBackBookDTO = FeedbackDTO.builder()
                     .id(feedBackForBook.getId())
@@ -101,6 +103,15 @@ public class BookService {
                     .createdBy(feedBackForBook.getCreatedBy().getFirstName() + " " + feedBackForBook.getCreatedBy().getLastName())
                     .build();
             feedBackBookDTOList.add(feedBackBookDTO);
+        }
+
+        for (Favourite favourite : book.getFavouriteList()) {
+            FavouriteDTO favouriteDTO = FavouriteDTO.builder()
+                    .id(favourite.getId())
+                    .createdBy(favourite.getCreatedBy().getFirstName() + " " + favourite.getCreatedBy().getLastName())
+                    .createdDate(favourite.getCreatedAt())
+                    .build();
+            favouriteDTOList.add(favouriteDTO);
         }
 
         ResBook resBook = ResBook.builder()
@@ -117,6 +128,7 @@ public class BookService {
                 .bookStatus(book.getStatus().name())
                 .favouriteCount(book.getFavouriteList().size())
                 .feedBackBook(feedBackBookDTOList)
+                .favouriteDTOList(favouriteDTOList)
                 .build();
 
         return new ApiResponse(resBook);

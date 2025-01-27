@@ -1,5 +1,6 @@
 package com.bookingprojectn1.payload.res;
 
+import com.bookingprojectn1.payload.FavouriteDTO;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import lombok.*;
 
@@ -18,5 +19,6 @@ public class ResLibrary {
     private double lng;
     private Long fileId;
     private Integer favouriteCount;
+    private List<FavouriteDTO> favourites;
     private List<FeedbackDTO> feedBackLibraryDTOList;
 }

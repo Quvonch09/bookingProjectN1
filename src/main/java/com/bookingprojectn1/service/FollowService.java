@@ -25,7 +25,10 @@ public class FollowService {
     private final PaymentRepository paymentRepository;
 
     public ApiResponse getFollowedByLibrary(Long libraryId) {
-        List<Followed> all = followedRepository.findAll(libraryId);
+        List<Followed> all = followedRepository.findAllByLibraryId(libraryId);
+        if (all.isEmpty()){
+            return new ApiResponse(ResponseError.NOTFOUND("Followed Library"));
+        }
         List<FollowedDTO> followedDTOList = new ArrayList<>();
         for (Followed followed : all) {
             FollowedDTO followedDTO = FollowedDTO.builder()

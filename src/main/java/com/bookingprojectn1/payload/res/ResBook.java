@@ -1,5 +1,6 @@
 package com.bookingprojectn1.payload.res;
 
+import com.bookingprojectn1.payload.FavouriteDTO;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import lombok.*;
 
@@ -24,4 +25,5 @@ public class ResBook {
     private String bookStatus;
     private Integer favouriteCount;
     private List<FeedbackDTO> feedBackBook;
+    private List<FavouriteDTO> favouriteDTOList;
 }
