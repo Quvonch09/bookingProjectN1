@@ -1,10 +1,8 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.Feedback;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.Library;
-import com.bookingprojectn1.entity.User;
+import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.payload.ApiResponse;
+import com.bookingprojectn1.payload.FavouriteDTO;
 import com.bookingprojectn1.payload.FeedbackDTO;
 import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.req.ReqLibrary;
@@ -94,9 +92,7 @@ public class LibraryService {
 
         List<FeedbackDTO> feedBackLibraryDTOS = new ArrayList<>();
 
-        if (library.getFeedbackList().isEmpty()){
-            feedBackLibraryDTOS=null;
-        }
+        List<FavouriteDTO> favouriteDTOList = new ArrayList<>();
 
         for (Feedback feedBackForLibrary : library.getFeedbackList()) {
             FeedbackDTO feedBackLibraryDTO = FeedbackDTO.builder()
@@ -109,6 +105,16 @@ public class LibraryService {
             feedBackLibraryDTOS.add(feedBackLibraryDTO);
         }
 
+
+        for (Favourite favourite : library.getFavouriteList()) {
+            FavouriteDTO favouriteDTO = FavouriteDTO.builder()
+                    .id(favourite.getId())
+                    .createdBy(favourite.getCreatedBy().getFirstName() + " " + favourite.getCreatedBy().getLastName())
+                    .createdDate(favourite.getCreatedAt())
+                    .build();
+            favouriteDTOList.add(favouriteDTO);
+        }
+
         ResLibrary resLibrary = ResLibrary.builder()
                 .libraryId(library.getId())
                 .libraryName(library.getName())
@@ -118,6 +124,7 @@ public class LibraryService {
                 .favouriteCount(library.getFavouriteList().size())
                 .fileId(library.getFile() != null ? library.getFile().getId():null)
                 .feedBackLibraryDTOList(feedBackLibraryDTOS)
+                .favourites(favouriteDTOList)
                 .build();
         return new ApiResponse(resLibrary);
     }
