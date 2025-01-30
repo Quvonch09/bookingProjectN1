@@ -29,11 +29,11 @@ public class FeedbackController {
 
     @Operation(summary = "ADMIN/LIBRARIAN/USER libraryga feedback berish uchun")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
-    @PostMapping("/forLibrary/{bookId}")
-    public ResponseEntity<ApiResponse> saveFeedbackLibrary(@PathVariable Long bookId,
+    @PostMapping("/forLibrary/{libraryId}")
+    public ResponseEntity<ApiResponse> saveFeedbackLibrary(@PathVariable Long libraryId ,
                                                     @CurrentUser User user,
                                                     @RequestBody FeedbackDTO feedbackDTO){
-        ApiResponse apiResponse = feedbackService.saveFeedbackLibrary(bookId, feedbackDTO, user);
+        ApiResponse apiResponse = feedbackService.saveFeedbackLibrary(libraryId, feedbackDTO, user);
         return ResponseEntity.ok(apiResponse);
     }
 }

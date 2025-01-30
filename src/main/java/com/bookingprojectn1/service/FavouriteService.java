@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
@@ -79,13 +80,16 @@ public class FavouriteService {
             return new ApiResponse(ResponseError.NOTFOUND("Book"));
         }
 
-        for (Favourite favourite : book.getFavouriteList()) {
+        Iterator<Favourite> iterator = book.getFavouriteList().iterator();
+        while (iterator.hasNext()) {
+            Favourite favourite = iterator.next();
             if (favourite.getCreatedBy().equals(currentUser)) {
                 favouriteRepository.deleteFavouriteBook(favourite.getId());
                 favouriteRepository.delete(favourite);
-                book.getFavouriteList().remove(favourite);
+                iterator.remove(); // Xatolik bo‘lmaydi
             }
         }
+
         bookRepository.save(book);
 
         return new ApiResponse("Successfully deleted a favourite");
@@ -98,13 +102,16 @@ public class FavouriteService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        for (Favourite favourite : library.getFavouriteList()) {
+        Iterator<Favourite> iterator = library.getFavouriteList().iterator();
+        while (iterator.hasNext()) {
+            Favourite favourite = iterator.next();
             if (favourite.getCreatedBy().equals(currentUser)) {
                 favouriteRepository.deleteFavouriteLibrary(favourite.getId());
                 favouriteRepository.delete(favourite);
-                library.getFavouriteList().remove(favourite);
+                iterator.remove(); // Xatolik yuzaga kelmaydi
             }
         }
+
         libraryRepository.save(library);
         return new ApiResponse("Successfully deleted a favourite");
     }
