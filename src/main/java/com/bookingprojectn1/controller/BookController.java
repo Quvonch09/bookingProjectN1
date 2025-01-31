@@ -32,12 +32,13 @@ public class BookController {
     public ResponseEntity<ApiResponse> searchBook(@RequestParam(value = "title", required = false) String title,
                                                   @RequestParam(value = "description", required = false) String description,
                                                   @RequestParam(value = "author", required = false) String author,
+                                                  @RequestParam(value = "year", required = false) String year,
                                                   @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "categoryId", required = false) Long categoryId,
                                                   @RequestParam(value = "bookStatus") BookStatus bookStatus,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title,description, author,libraryId,categoryId,bookStatus, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title,description, author,year,libraryId,categoryId,bookStatus, page, size);
         return ResponseEntity.ok(allBooks);
     }
 

@@ -77,6 +77,8 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
+                1L,
                 1L,
                 1L,
                 1L,
@@ -89,7 +91,10 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
                 new File(),
+                new File(),
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
@@ -120,6 +125,8 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
+                1L,
                 1L,
                 1L,
                 1L,
@@ -147,7 +154,10 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
                 new File(),
+                new File(),
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
@@ -156,15 +166,19 @@ public class BookControllerTest {
 
         ResBook resBook = new ResBook(
                 1L,
-                "nimadir",
+                "Nimadir",
                 "nimadir",
                 4L,
-                "quvonchbek",
+                "Quvonchbek",
+                "2024",
                 10,
                 1L,
                 1L,
                 1L,
+                1L,
                 "BOOKED",
+                10,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 
@@ -185,13 +199,14 @@ public class BookControllerTest {
         String title = "Nimadir";
         String description = "Nimadir";
         String author = "Quvonchbek";
+        String year = "2024";
         Long libraryId = 1L;
         Long categoryId = 1L;
         int page = 0;
         int size = 10;
-        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300, null, null, null,BookStatus.BOOKED,null);
-        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400, null, null, null,BookStatus.BOOKED,null);
-        Book book3 = new Book(3L, "Nimadir2", "Nimadir3", "Boshqa", 400, null, null, null,BookStatus.BOOKED,null);
+        Book book1 = new Book(1L, "Nimadir1", "Nimadir1", "Quvonchbek1", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Quvonchbek2", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
+        Book book3 = new Book(3L, "Nimadir3", "Nimadir3", "Quvonchbek3", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
         List<Book> bookList = new ArrayList<>();
         bookList.add(book1);
         bookList.add(book2);
@@ -206,10 +221,10 @@ public class BookControllerTest {
                 .build();
         ApiResponse apiResponse = new ApiResponse(resPageable);
 
-        when(bookRepository.searchBook(title,description,author,libraryId,categoryId,BookStatus.BOOKED.name(), PageRequest.of(page,size))).thenReturn(bookPage);
-        when(bookService.getAllBooks(title,description,author,libraryId,categoryId,BookStatus.BOOKED,page,size)).thenReturn(apiResponse);
+        when(bookRepository.searchBook(title,description,author,year,libraryId,categoryId,BookStatus.BOOKED.name(), PageRequest.of(page,size))).thenReturn(bookPage);
+        when(bookService.getAllBooks(title,description,author,year,libraryId,categoryId,BookStatus.BOOKED,page,size)).thenReturn(apiResponse);
 
-        ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, libraryId,categoryId,BookStatus.BOOKED, page, size);
+        ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, year, libraryId,categoryId,BookStatus.BOOKED, page, size);
         System.out.println(objectMapper.writeValueAsString(response));
     }
 
@@ -226,6 +241,8 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
+                1L,
                 1L,
                 1L,
                 1L,
@@ -238,7 +255,10 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
                 new File(),
+                new File(),
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
@@ -265,7 +285,10 @@ public class BookControllerTest {
                 "nimadir",
                 "Quvonchbek",
                 10,
+                "2024",
                 new File(),
+                new File(),
+                new ArrayList<>(),
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,

@@ -17,6 +17,7 @@ public class ReqBook {
     private String description;
     private String author;
     private Integer pageCount;
+    private String year;
     private Long fileId;
     private Long bookImgId;
     private Long libraryId;

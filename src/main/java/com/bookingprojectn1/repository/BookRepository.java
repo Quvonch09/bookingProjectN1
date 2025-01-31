@@ -16,10 +16,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "            where (?1 IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', ?1, '%')))\n" +
             "            and (?3 IS NULL OR LOWER(b.author) LIKE LOWER(CONCAT('%', ?3, '%')))\n" +
             "and (?2 IS NULL OR LOWER(b.description) LIKE LOWER(CONCAT('%', ?2, '%')))\n" +
-            "and (?4 IS NULL OR b.library_id = ?4) " +
-            "and (?5 IS NULL OR b.category_id = ?5)" +
-            "and (?6 IS NULL OR b.status = ?6) ORDER BY b.id desc",nativeQuery = true)
-    Page<Book> searchBook(String title, String description ,String author,Long libraryId,Long categoryId,String role, Pageable pageable);
+            "and (?5 IS NULL OR b.library_id = ?5) " +
+            "and (?6 IS NULL OR b.category_id = ?6)" +
+            "and (?7 IS NULL OR b.status = ?7)" +
+            "and (?4 IS NULL OR b.year = ?4) ORDER BY b.id desc",nativeQuery = true)
+    Page<Book> searchBook(String title, String description ,String author, String year,Long libraryId,
+                          Long categoryId,String role, Pageable pageable);
 
 
     @Query(value = "select b.* from book b join book_reservation br on b.id = br.book_id where" +

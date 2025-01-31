@@ -28,6 +28,9 @@ public class UserService {
 
 
     public ApiResponse getMe(User user){
+        if (!user.isEnabled()){
+            return new ApiResponse(ResponseError.DEFAULT_ERROR("Bu user allaqachon uchirilgan"));
+        }
         UserDTO userDTO = UserDTO.builder()
                 .userId(user.getId())
                 .firstName(user.getFirstName())
@@ -47,7 +50,7 @@ public class UserService {
         if (userId == null){
             user1 = currentUser;
         }else {
-            user1 = userRepository.findById(userId).orElse(null);
+            user1 = userRepository.findByIdAndEnabledTrue(userId).orElse(null);
             if(user1 == null){
                 return new ApiResponse(ResponseError.NOTFOUND("User"));
             }
@@ -94,5 +97,18 @@ public class UserService {
                 .body(userDTOList)
                 .build();
         return new ApiResponse(resPageable);
+    }
+
+
+
+    public ApiResponse deleteUser(User currentUser){
+        User user = userRepository.findByIdAndEnabledTrue(currentUser.getId()).orElse(null);
+        if (user == null){
+            return new ApiResponse(ResponseError.NOTFOUND("User"));
+        }
+
+        user.setEnabled(false);
+        userRepository.save(user);
+        return new ApiResponse("User deleted successfully");
     }
 }

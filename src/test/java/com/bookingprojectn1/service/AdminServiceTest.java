@@ -8,8 +8,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,9 +37,9 @@ class AdminServiceTest {
     @Test
     void countAll() {
 
-        when(userRepository.countByRole(ERole.ROLE_ADMIN)).thenReturn(1L);
+        when(userRepository.countByRoleAndEnabledTrue(ERole.ROLE_ADMIN)).thenReturn(1L);
         when(libraryRepository.count()).thenReturn(2L);
-        when(userRepository.countByRole(ERole.ROLE_USER)).thenReturn(3L);
+        when(userRepository.countByRoleAndEnabledTrue(ERole.ROLE_USER)).thenReturn(3L);
 
         ApiResponse apiResponse = adminService.countAll();
         assertNotNull(apiResponse);
