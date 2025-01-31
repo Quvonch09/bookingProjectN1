@@ -26,7 +26,7 @@ public class AuthService {
 
     public ApiResponse login(AuthLogin authLogin)
     {
-        User user = userRepository.findByPhoneNumber(authLogin.getPhoneNumber());
+        User user = userRepository.findByPhoneNumberAndEnabledTrue(authLogin.getPhoneNumber());
         if (user == null) {
             return new ApiResponse(ResponseError.NOTFOUND("User"));
         }
@@ -50,7 +50,7 @@ public class AuthService {
     public ApiResponse register(AuthRegister auth)
     {
 
-        User byPhoneNumber = userRepository.findByPhoneNumber(auth.getPhoneNumber());
+        User byPhoneNumber = userRepository.findByPhoneNumberAndEnabledTrue(auth.getPhoneNumber());
         if (byPhoneNumber != null) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Phone number"));
         }
@@ -69,7 +69,7 @@ public class AuthService {
     public ApiResponse adminSaveLibrarian(AuthRegister auth,ERole eRole)
     {
 
-        User byPhoneNumber = userRepository.findByPhoneNumber(auth.getPhoneNumber());
+        User byPhoneNumber = userRepository.findByPhoneNumberAndEnabledTrue(auth.getPhoneNumber());
         if (byPhoneNumber != null) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("Phone number"));
         }
@@ -83,7 +83,7 @@ public class AuthService {
 
 
     public ApiResponse forgotPassword(AuthLogin authLogin){
-        User byPhoneNumber = userRepository.findByPhoneNumber(authLogin.getPhoneNumber());
+        User byPhoneNumber = userRepository.findByPhoneNumberAndEnabledTrue(authLogin.getPhoneNumber());
         if (byPhoneNumber == null) {
             return new ApiResponse(ResponseError.NOTFOUND("USER"));
         }

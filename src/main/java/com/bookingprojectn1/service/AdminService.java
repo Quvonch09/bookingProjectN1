@@ -15,9 +15,9 @@ public class AdminService {
     private final LibraryRepository libraryRepository;
 
     public ApiResponse countAll(){
-        Long adminCount = userRepository.countByRole(ERole.ROLE_ADMIN);
+        Long adminCount = userRepository.countByRoleAndEnabledTrue(ERole.ROLE_ADMIN);
         Long count = libraryRepository.count();
-        Long userCount = userRepository.countByRole(ERole.ROLE_USER);
+        Long userCount = userRepository.countByRoleAndEnabledTrue(ERole.ROLE_USER);
         ResAdmin resAdmin = ResAdmin.builder()
                 .countAdmins(adminCount)
                 .countLibraries(count)

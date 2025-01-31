@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,9 +47,9 @@ class AdminControllerTest {
         ResAdmin resAdmin = new ResAdmin(1L, 2L, 3L);
         ApiResponse apiResponse = new ApiResponse(resAdmin);
 
-        when(userRepository.countByRole(ERole.ROLE_ADMIN)).thenReturn(1L);
+        when(userRepository.countByRoleAndEnabledTrue(ERole.ROLE_ADMIN)).thenReturn(1L);
         when(libraryRepository.count()).thenReturn(2L);
-        when(userRepository.countByRole(ERole.ROLE_USER)).thenReturn(3L);
+        when(userRepository.countByRoleAndEnabledTrue(ERole.ROLE_USER)).thenReturn(3L);
         when(adminService.countAll()).thenReturn(apiResponse);
 
         ResponseEntity<ApiResponse> response = adminController.countAll();

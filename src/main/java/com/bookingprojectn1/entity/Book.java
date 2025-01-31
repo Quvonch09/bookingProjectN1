@@ -22,6 +22,7 @@ public class Book {
     private String description;
     private String author;
     private Integer pageCount;
+    private String year;
     @OneToOne
     private File pdf;
     @OneToOne

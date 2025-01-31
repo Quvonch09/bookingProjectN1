@@ -32,6 +32,7 @@ public class BookService {
     private final CategoryRepository categoryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
+//        bu joyida kitob nomini uniquelikka tekshirishni uylab chiqish kk
         boolean b = bookRepository.existsByTitleIgnoreCase(reqBook.getTitle());
         if (b){
             return new ApiResponse(ResponseError.ALREADY_EXIST("Bu nomli kitob"));
@@ -58,6 +59,7 @@ public class BookService {
                 .pdf(pdf!=null ? pdf : null)
                 .bookImg(bookImg!=null ? bookImg : null)
                 .feedbackList(null)
+                .year(reqBook.getYear())
                 .library(library)
                 .category(category)
                 .status(BookStatus.BORROWED)
@@ -68,9 +70,9 @@ public class BookService {
     }
 
 
-    public ApiResponse getAllBooks(String title,String description,String author,Long libraryId,Long categoryId,BookStatus bookStatus,int page, int size){
+    public ApiResponse getAllBooks(String title,String description,String author,String year,Long libraryId,Long categoryId,BookStatus bookStatus,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,description,author,libraryId,categoryId,bookStatus.name(),pageRequest);
+        Page<Book> books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,bookStatus.name(),pageRequest);
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
             double v = calculateAverageRating(book);
@@ -121,6 +123,7 @@ public class BookService {
                 .rate(Math.round(calculateAverageRating(book)))
                 .author(book.getAuthor())
                 .pageCount(book.getPageCount())
+                .year(book.getYear())
                 .pdfId(book.getPdf() != null ? book.getPdf().getId() : null)
                 .bookImgId(book.getBookImg() != null ? book.getBookImg().getId() : null)
                 .libraryId(book.getLibrary().getId())
@@ -158,6 +161,7 @@ public class BookService {
         book.setPdf(fileRepository.findById(reqBook.getFileId()).orElse(null));
         book.setBookImg(fileRepository.findById(reqBook.getBookImgId()).orElse(null));
         book.setLibrary(library);
+        book.setYear(reqBook.getYear());
         book.setCategory(category);
         book.setStatus(status);
         bookRepository.save(book);
@@ -232,6 +236,7 @@ public class BookService {
                 .description(book.getDescription())
                 .rate(Math.round(rate))
                 .author(book.getAuthor())
+                .year(book.getYear())
                 .pageCount(book.getPageCount())
                 .fileId(book.getPdf()!=null ? book.getPdf().getId():null)
                 .bookImgId(book.getBookImg()!=null ? book.getBookImg().getId():null)

@@ -26,7 +26,7 @@ public class Configure {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userRepository::findByPhoneNumber;
+        return userRepository::findByPhoneNumberAndEnabledTrue;
     }
 
     @Bean

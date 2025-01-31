@@ -49,4 +49,13 @@ public class UserController {
         ApiResponse apiResponse = userService.searchUsers(keyword, phoneNumber, role, page, size);
         return ResponseEntity.ok(apiResponse);
     }
+
+
+    @Operation(summary = "User uzini profilini uchirish")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
+    @DeleteMapping
+    public ResponseEntity<ApiResponse> deleteUser(@CurrentUser User user){
+        ApiResponse apiResponse = userService.deleteUser(user);
+        return ResponseEntity.ok(apiResponse);
+    }
 }
