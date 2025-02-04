@@ -9,10 +9,7 @@ import com.bookingprojectn1.payload.ResponseError;
 import com.bookingprojectn1.payload.req.ReqBook;
 import com.bookingprojectn1.payload.res.ResBook;
 import com.bookingprojectn1.payload.res.ResPageable;
-import com.bookingprojectn1.repository.BookRepository;
-import com.bookingprojectn1.repository.CategoryRepository;
-import com.bookingprojectn1.repository.FileRepository;
-import com.bookingprojectn1.repository.LibraryRepository;
+import com.bookingprojectn1.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +27,7 @@ public class BookService {
     private final FileRepository fileRepository;
     private final LibraryRepository libraryRepository;
     private final CategoryRepository categoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
 //        bu joyida kitob nomini uniquelikka tekshirishni uylab chiqish kk
@@ -46,8 +44,8 @@ public class BookService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        Category category = categoryRepository.findById(reqBook.getCategoryId()).orElse(null);
-        if (category == null) {
+        SubCategory subCategory = subCategoryRepository.findById(reqBook.getSubCategoryId()).orElse(null);
+        if (subCategory == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Category"));
         }
 
@@ -61,7 +59,8 @@ public class BookService {
                 .feedbackList(null)
                 .year(reqBook.getYear())
                 .library(library)
-                .category(category)
+                .category(subCategory.getCategory())
+                .subCategory(subCategory)
                 .status(BookStatus.BORROWED)
                 .build();
         bookRepository.save(book);
@@ -70,9 +69,10 @@ public class BookService {
     }
 
 
-    public ApiResponse getAllBooks(String title,String description,String author,String year,Long libraryId,Long categoryId,BookStatus bookStatus,int page, int size){
+    public ApiResponse getAllBooks(String title,String description,String author,String year,Long libraryId,
+                                   Long categoryId,Long subCategoryId,BookStatus bookStatus,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,bookStatus.name(),pageRequest);
+        Page<Book> books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,subCategoryId,bookStatus.name(),pageRequest);
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
             double v = calculateAverageRating(book);
@@ -128,6 +128,7 @@ public class BookService {
                 .bookImgId(book.getBookImg() != null ? book.getBookImg().getId() : null)
                 .libraryId(book.getLibrary().getId())
                 .categoryId(book.getCategory().getId())
+                .subCategoryId(book.getSubCategory().getId())
                 .bookStatus(book.getStatus().name())
                 .favouriteCount(book.getFavouriteList().size())
                 .feedBackBook(feedBackBookDTOList)
@@ -149,8 +150,8 @@ public class BookService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        Category category = categoryRepository.findById(reqBook.getCategoryId()).orElse(null);
-        if (category == null) {
+        SubCategory subCategory = subCategoryRepository.findById(reqBook.getSubCategoryId()).orElse(null);
+        if (subCategory == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Category"));
         }
 
@@ -162,7 +163,8 @@ public class BookService {
         book.setBookImg(fileRepository.findById(reqBook.getBookImgId()).orElse(null));
         book.setLibrary(library);
         book.setYear(reqBook.getYear());
-        book.setCategory(category);
+        book.setCategory(subCategory.getCategory());
+        book.setSubCategory(subCategory);
         book.setStatus(status);
         bookRepository.save(book);
         return new ApiResponse("Successfully updated Book");
@@ -241,7 +243,7 @@ public class BookService {
                 .fileId(book.getPdf()!=null ? book.getPdf().getId():null)
                 .bookImgId(book.getBookImg()!=null ? book.getBookImg().getId():null)
                 .libraryId(book.getLibrary()!= null ? book.getLibrary().getId():null)
-                .categoryId(book.getCategory() != null ? book.getCategory().getId():null)
+                .subCategoryId(book.getCategory() != null ? book.getCategory().getId():null)
                 .bookStatus(book.getStatus().name())
                 .build();
     }

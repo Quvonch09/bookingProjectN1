@@ -21,7 +21,7 @@ public class ReqBook {
     private Long fileId;
     private Long bookImgId;
     private Long libraryId;
-    private Long categoryId;
+    private Long subCategoryId;
     @Schema(hidden = true)
     private String bookStatus;
 }

@@ -70,7 +70,7 @@ public class BookOrderService {
                 false
         );
 
-        return new ApiResponse("Book Reservation");
+        return new ApiResponse("Book Reservation saved");
     }
 
 
@@ -99,14 +99,14 @@ public class BookOrderService {
         return new ApiResponse("Notification junatildi");
     }
 
-    public ApiResponse getReservationsByBook(Long bookId,User user) {
+    public ApiResponse getReservationsByBook(Long bookId,Long userId) {
         Book book = bookRepository.findById(bookId).orElse(null);
         if (book == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Book"));
         }
 
         List<BookOrder> byBookAndReservationDateBefore = bookReservationRepository.
-                findByBookAndUserAndEndReservationBefore(book.getId(), user.getId(), LocalDate.now());
+                findByBookAndUserAndEndReservationBefore(book.getId(), userId, LocalDate.now());
         List<ResBookReservation> bookReservationDTOList = new ArrayList<>();
         if (byBookAndReservationDateBefore.isEmpty()) {
             return new ApiResponse(ResponseError.NOTFOUND("Book reservation"));
@@ -118,8 +118,8 @@ public class BookOrderService {
                     .reservationId(bookOrder.getId())
                     .bookId(bookOrder.getBook().getId())
                     .userId(bookOrder.getUser().getId())
-                    .startReservationDate(bookOrder.getStartReservation())
-                    .endReservationDate(bookOrder.getEndReservation())
+                    .orderStartDate(bookOrder.getStartReservation())
+                    .orderEndDate(bookOrder.getEndReservation())
                     .leftDays(bookOrder.getEndReservation().minusDays(epochDay).toEpochDay())
                     .build();
             bookReservationDTOList.add(bookReservationDTO);
@@ -138,8 +138,8 @@ public class BookOrderService {
                     .reservationId(bookOrder.getId())
                     .bookId(bookOrder.getBook().getId())
                     .userId(bookOrder.getUser().getId())
-                    .startReservationDate(bookOrder.getStartReservation())
-                    .endReservationDate(bookOrder.getEndReservation())
+                    .orderStartDate(bookOrder.getStartReservation())
+                    .orderEndDate(bookOrder.getEndReservation())
                     .leftDays(bookOrder.getEndReservation().minusDays(epochDay).toEpochDay())
                     .build();
             bookReservationDTOList.add(resBookReservation);

@@ -52,12 +52,11 @@ public class BookOrderController {
 
 
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
     @Operation(summary = "kitob buyicha muddati tugamagan orderlarini listini kurish")
     @GetMapping("/{bookId}")
-    public ResponseEntity<ApiResponse> getBookReservationList(@PathVariable Long bookId,
-                                                              @CurrentUser User user) {
-        ApiResponse reservationsByBook = bookOrderService.getReservationsByBook(bookId,user);
+    public ResponseEntity<ApiResponse> getBookReservationList(@PathVariable Long bookId, Long userId) {
+        ApiResponse reservationsByBook = bookOrderService.getReservationsByBook(bookId,userId);
         return ResponseEntity.ok(reservationsByBook);
     }
 
