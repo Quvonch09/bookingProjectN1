@@ -23,6 +23,7 @@ public class ResBook {
     private Long bookImgId;
     private Long libraryId;
     private Long categoryId;
+    private Long subCategoryId;
     private String bookStatus;
     private Integer favouriteCount;
     private List<FeedbackDTO> feedBackBook;

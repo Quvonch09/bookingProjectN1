@@ -13,7 +13,7 @@ public class ResBookReservation {
     private Long reservationId;
     private Long bookId;
     private Long userId;
-    private LocalDate startReservationDate;
-    private LocalDate endReservationDate;
+    private LocalDate orderStartDate;
+    private LocalDate orderEndDate;
     private Long leftDays;
 }

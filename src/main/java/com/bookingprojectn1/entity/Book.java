@@ -37,4 +37,6 @@ public class Book {
     private BookStatus status;
     @ManyToOne
     private Category category;
+    @ManyToOne
+    private SubCategory subCategory;
 }

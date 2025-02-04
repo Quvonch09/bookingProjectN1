@@ -18,7 +18,7 @@ public class BookController {
     private final BookService bookService;
 
     @Operation(summary = "ADMIN/LIBRARIAN book qo'shish")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN','ROLE_SUPER_ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse> addBook(@RequestBody ReqBook book) {
         ApiResponse apiResponse = bookService.addBook(book);
@@ -35,10 +35,11 @@ public class BookController {
                                                   @RequestParam(value = "year", required = false) String year,
                                                   @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                                  @RequestParam(value = "subCategoryId", required = false) Long subCategoryId,
                                                   @RequestParam(value = "bookStatus") BookStatus bookStatus,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
-        ApiResponse allBooks = bookService.getAllBooks(title,description, author,year,libraryId,categoryId,bookStatus, page, size);
+        ApiResponse allBooks = bookService.getAllBooks(title,description, author,year,libraryId,categoryId,subCategoryId,bookStatus, page, size);
         return ResponseEntity.ok(allBooks);
     }
 
