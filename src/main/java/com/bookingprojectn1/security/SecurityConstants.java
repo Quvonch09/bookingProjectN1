@@ -5,7 +5,7 @@ public class SecurityConstants {
             "/api/auth/**",
             "/api/file/**",
             "/category/list",
-            "notification/contact",
+            "api/notification/fcm",
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v2/api-docs",
