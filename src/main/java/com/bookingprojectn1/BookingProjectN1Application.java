@@ -13,18 +13,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class BookingProjectN1Application {
-
-
-    @Bean
-    FirebaseMessaging firebaseMessaging() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource("library-f8d06-firebase-adminsdk-fbsvc-1c3d61da56.json").getInputStream());
-        FirebaseOptions firebaseOptions = FirebaseOptions.builder()
-                .setCredentials(googleCredentials).build();
-        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions,"my-app");
-        return FirebaseMessaging.getInstance(app);
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(BookingProjectN1Application.class, args);
     }
