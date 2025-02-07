@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class BookOrderController {
     private final BookOrderService bookOrderService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_LIBRARIAN', 'ROLE_SUPER_ADMIN')")
     @Operation(summary = "User oldindan order qilish")
     @PostMapping
     public ResponseEntity<ApiResponse> saveBookReservation(@RequestBody BookReservationDTO bookReservationDTO) {
@@ -54,8 +54,9 @@ public class BookOrderController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER','ROLE_LIBRARIAN')")
     @Operation(summary = "kitob buyicha muddati tugamagan orderlarini listini kurish")
-    @GetMapping("/{bookId}")
-    public ResponseEntity<ApiResponse> getBookReservationList(@PathVariable Long bookId, Long userId) {
+    @GetMapping("/notExpiredBooks")
+    public ResponseEntity<ApiResponse> getBookReservationList(@RequestParam(required = false) Long bookId,
+                                                              @RequestParam(required = false) Long userId) {
         ApiResponse reservationsByBook = bookOrderService.getReservationsByBook(bookId,userId);
         return ResponseEntity.ok(reservationsByBook);
     }

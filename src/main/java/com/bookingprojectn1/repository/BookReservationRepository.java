@@ -12,8 +12,11 @@ import java.util.List;
 
 public interface BookReservationRepository extends JpaRepository<BookOrder, Long> {
 
-    @Query(value = "select br.* from book_order br where br.book_id =:bookId " +
-            "and br.user_id =:userId and br.end_reservation >:date ", nativeQuery = true)
+    @Query(value = "SELECT br.*\n" +
+            "FROM book_order br\n" +
+            "WHERE (br.book_id = :bookId OR :bookId IS NULL)\n" +
+            "  AND (br.user_id = :userId OR :userId IS NULL)\n" +
+            "  AND (br.end_reservation > :date)", nativeQuery = true)
     List<BookOrder> findByBookAndUserAndEndReservationBefore(@Param("bookId") Long book,
                                                              @Param("userId") Long user,
                                                              @Param("date") LocalDate date);
