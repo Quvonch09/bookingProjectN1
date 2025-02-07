@@ -100,13 +100,9 @@ public class BookOrderService {
     }
 
     public ApiResponse getReservationsByBook(Long bookId,Long userId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        if (book == null) {
-            return new ApiResponse(ResponseError.NOTFOUND("Book"));
-        }
 
         List<BookOrder> byBookAndReservationDateBefore = bookReservationRepository.
-                findByBookAndUserAndEndReservationBefore(book.getId(), userId, LocalDate.now());
+                findByBookAndUserAndEndReservationBefore(bookId, userId, LocalDate.now());
         List<ResBookReservation> bookReservationDTOList = new ArrayList<>();
         if (byBookAndReservationDateBefore.isEmpty()) {
             return new ApiResponse(ResponseError.NOTFOUND("Book reservation"));
