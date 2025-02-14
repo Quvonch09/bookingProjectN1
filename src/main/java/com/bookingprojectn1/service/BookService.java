@@ -72,7 +72,13 @@ public class BookService {
     public ApiResponse getAllBooks(String title,String description,String author,String year,Long libraryId,
                                    Long categoryId,Long subCategoryId,BookStatus bookStatus,int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Book> books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,subCategoryId,bookStatus.name(),pageRequest);
+        Page<Book> books;
+        if (bookStatus == null){
+            books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,subCategoryId,null,pageRequest);
+        }else {
+
+            books = bookRepository.searchBook(title,description,author,year,libraryId,categoryId,subCategoryId,bookStatus.name(),pageRequest);
+        }
         List<ReqBook> reqBookList = new ArrayList<>();
         for (Book book : books) {
             double v = calculateAverageRating(book);

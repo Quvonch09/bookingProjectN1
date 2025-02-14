@@ -1,9 +1,6 @@
 package com.bookingprojectn1.controller;
 
-import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.Category;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.Library;
+import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
@@ -98,7 +95,8 @@ public class BookControllerTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
         ApiResponse apiResponse = new ApiResponse("Successfully saved Book");
@@ -161,7 +159,8 @@ public class BookControllerTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
         ResBook resBook = new ResBook(
@@ -172,6 +171,7 @@ public class BookControllerTest {
                 "Quvonchbek",
                 "2024",
                 10,
+                1L,
                 1L,
                 1L,
                 1L,
@@ -202,11 +202,12 @@ public class BookControllerTest {
         String year = "2024";
         Long libraryId = 1L;
         Long categoryId = 1L;
+        Long subCategoryId = 1L;
         int page = 0;
         int size = 10;
-        Book book1 = new Book(1L, "Nimadir1", "Nimadir1", "Quvonchbek1", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
-        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Quvonchbek2", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
-        Book book3 = new Book(3L, "Nimadir3", "Nimadir3", "Quvonchbek3", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
+        Book book1 = new Book(1L, "Nimadir1", "Nimadir1", "Quvonchbek1", 300,"2024", null, null,null,null,null, BookStatus.BOOKED,null, null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Quvonchbek2", 300,"2024", null, null,null,null,null, BookStatus.BOOKED, null,null);
+        Book book3 = new Book(3L, "Nimadir3", "Nimadir3", "Quvonchbek3", 300,"2024", null, null,null,null,null, BookStatus.BOOKED,null, null);
         List<Book> bookList = new ArrayList<>();
         bookList.add(book1);
         bookList.add(book2);
@@ -221,10 +222,10 @@ public class BookControllerTest {
                 .build();
         ApiResponse apiResponse = new ApiResponse(resPageable);
 
-        when(bookRepository.searchBook(title,description,author,year,libraryId,categoryId,BookStatus.BOOKED.name(), PageRequest.of(page,size))).thenReturn(bookPage);
-        when(bookService.getAllBooks(title,description,author,year,libraryId,categoryId,BookStatus.BOOKED,page,size)).thenReturn(apiResponse);
+        when(bookRepository.searchBook(title,description,author,year,libraryId,categoryId,subCategoryId,BookStatus.BOOKED.name(), PageRequest.of(page,size))).thenReturn(bookPage);
+        when(bookService.getAllBooks(title,description,author,year,libraryId,categoryId,subCategoryId,BookStatus.BOOKED,page,size)).thenReturn(apiResponse);
 
-        ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, year, libraryId,categoryId,BookStatus.BOOKED, page, size);
+        ResponseEntity<ApiResponse> response = bookController.searchBook(title, description, author, year, libraryId,categoryId,subCategoryId,BookStatus.BOOKED, page, size);
         System.out.println(objectMapper.writeValueAsString(response));
     }
 
@@ -262,7 +263,8 @@ public class BookControllerTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
@@ -292,7 +294,8 @@ public class BookControllerTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));

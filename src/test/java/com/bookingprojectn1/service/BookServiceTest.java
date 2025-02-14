@@ -1,9 +1,6 @@
 package com.bookingprojectn1.service;
 
-import com.bookingprojectn1.entity.Book;
-import com.bookingprojectn1.entity.Category;
-import com.bookingprojectn1.entity.File;
-import com.bookingprojectn1.entity.Library;
+import com.bookingprojectn1.entity.*;
 import com.bookingprojectn1.entity.enums.BookStatus;
 import com.bookingprojectn1.payload.ApiResponse;
 import com.bookingprojectn1.payload.req.ReqBook;
@@ -82,7 +79,8 @@ class BookServiceTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
 
@@ -145,7 +143,8 @@ class BookServiceTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
         when(bookRepository.save(book)).thenReturn(book);
@@ -166,20 +165,21 @@ class BookServiceTest {
         String author = "Quvonchbek";
         Long libraryId = 1L;
         Long categoryId = 1L;
+        Long subCategoryId = 1L;
         int page = 0;
         int size = 10;
         String year = "2024";
 
         // Test uchun kitob ro'yxati va sahifalash (pagination) yaratish
-        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null);
-        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400,"2024",null,null, null, null, null,BookStatus.BOOKED,null);
+        Book book1 = new Book(1L, "Nimadir", "Nimadir", "Quvonchbek", 300,"2024", null, null,null,null, null,BookStatus.BOOKED, null,null);
+        Book book2 = new Book(2L, "Nimadir2", "Nimadir2", "Boshqa", 400,"2024",null,null, null, null, null,BookStatus.BOOKED,null,null);
         List<Book> bookList = new ArrayList<>();
         bookList.add(book1);
         bookList.add(book2);
         Page<Book> bookPage = new PageImpl<>(bookList, PageRequest.of(page, size), bookList.size());
 
         // Mock qilib metodni o'rnatish
-        when(bookRepository.searchBook(title, description, author, year,libraryId,categoryId,BookStatus.BOOKED.name(), PageRequest.of(page, size)))
+        when(bookRepository.searchBook(title, description, author, year,libraryId,categoryId,subCategoryId,BookStatus.BOOKED.name(), PageRequest.of(page, size)))
                 .thenReturn(bookPage);
 
 //        // Mock qilish - o'rtacha reyting hisoblash
@@ -187,7 +187,7 @@ class BookServiceTest {
 //        when(bookService.calculateAverageRating(book2)).thenReturn(4.0);
 
         // Test method chaqirilishi
-        ApiResponse apiResponse = bookService.getAllBooks(title, description, author, year,libraryId, categoryId,BookStatus.BOOKED,page, size);
+        ApiResponse apiResponse = bookService.getAllBooks(title, description, author, year,libraryId, categoryId,subCategoryId,BookStatus.BOOKED,page, size);
 
         // Tekshirish
         assertNotNull(apiResponse);
@@ -214,7 +214,8 @@ class BookServiceTest {
                 new ArrayList<>(),
                 new Library(),
                 BookStatus.BOOKED,
-                new Category()
+                new Category(),
+                new SubCategory()
         );
 
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
