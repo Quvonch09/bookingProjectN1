@@ -36,7 +36,7 @@ public class BookController {
                                                   @RequestParam(value = "libraryId", required = false) Long libraryId,
                                                   @RequestParam(value = "categoryId", required = false) Long categoryId,
                                                   @RequestParam(value = "subCategoryId", required = false) Long subCategoryId,
-                                                  @RequestParam(value = "bookStatus") BookStatus bookStatus,
+                                                  @RequestParam(value = "bookStatus", required = false) BookStatus bookStatus,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
         ApiResponse allBooks = bookService.getAllBooks(title,description, author,year,libraryId,categoryId,subCategoryId,bookStatus, page, size);
