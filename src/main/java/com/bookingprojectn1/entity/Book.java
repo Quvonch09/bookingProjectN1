@@ -19,24 +19,33 @@ public class Book {
     private Long id;
 
     private String title;
+
     private String description;
+
     private String author;
+
     private Integer pageCount;
+
     private String year;
+
     @OneToOne
     private File pdf;
+
     @OneToOne
     private File bookImg;
+
     @ManyToMany
     private List<Feedback> feedbackList;
+
     @ManyToMany
     private List<Favourite> favouriteList;
+
     @ManyToOne
     private Library library;
+
     @Enumerated(EnumType.STRING)
     private BookStatus status;
-    @ManyToOne
-    private Category category;
+
     @ManyToOne
     private SubCategory subCategory;
 }

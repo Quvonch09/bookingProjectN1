@@ -31,6 +31,7 @@ public class UserService {
         if (!user.isEnabled()){
             return new ApiResponse(ResponseError.DEFAULT_ERROR("Bu user allaqachon uchirilgan"));
         }
+
         UserDTO userDTO = UserDTO.builder()
                 .userId(user.getId())
                 .firstName(user.getFirstName())
@@ -40,31 +41,32 @@ public class UserService {
                 .role(user.getRole().name())
                 .fileId(user.getFile() != null ? user.getFile().getId() : null)
                 .build();
+
         return new ApiResponse(userDTO);
     }
 
 
-    public ApiResponse updateUser(Long userId,UserDTO user, User currentUser){
-        User user1;
+    public ApiResponse updateUser(Long userId,UserDTO userDto, User currentUser){
+        User user;
 
         if (userId == null){
-            user1 = currentUser;
+            user = currentUser;
         }else {
-            user1 = userRepository.findByIdAndEnabledTrue(userId).orElse(null);
-            if(user1 == null){
-                return new ApiResponse(ResponseError.NOTFOUND("User"));
-            }
+            user = userRepository.findByIdAndEnabledTrue(userId).orElse(null);
         }
 
-        user1.setFirstName(user.getFirstName());
-        user1.setLastName(user.getLastName());
-        user1.setUserName(user.getUserName());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setFile(fileRepository.findById(user.getFileId()).orElse(null));
-        userRepository.save(user1);
+        if(user == null){
+            return new ApiResponse(ResponseError.NOTFOUND("User"));
+        }
 
-        String token = jwtProvider.generateToken(user1.getPhoneNumber());
-        ResponseLogin responseLogin = new ResponseLogin(token, user1.getRole().name(), user1.getId());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setFile(fileRepository.findById(userDto.getFileId()).orElse(null));
+        userRepository.save(user);
+
+        String token = jwtProvider.generateToken(user.getPhoneNumber());
+        ResponseLogin responseLogin = new ResponseLogin(token, user.getRole().name(), user.getId());
         return new ApiResponse(responseLogin);
     }
 

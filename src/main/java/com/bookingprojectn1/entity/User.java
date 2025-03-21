@@ -1,6 +1,7 @@
 package com.bookingprojectn1.entity;
 
 import com.bookingprojectn1.entity.enums.ERole;
+import com.bookingprojectn1.entity.template.AbsEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,17 +20,13 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User extends AbsEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(nullable = false)
     private String firstName;
 
+    @Column(nullable = false)
     private String lastName;
-
-    private String userName;
 
     @Column(nullable = false, unique = true)
     private String phoneNumber;
@@ -43,12 +40,6 @@ public class User implements UserDetails {
     @OneToOne
     private File file;
 
-
-    private boolean accountNonExpired;
-
-    private boolean credentialsNonExpired;
-
-    private boolean accountNonLocked;
 
     private boolean enabled;
 
@@ -65,17 +56,17 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return accountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
+        return true;
     }
 
     @Override

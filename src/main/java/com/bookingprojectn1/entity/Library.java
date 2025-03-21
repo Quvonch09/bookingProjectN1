@@ -1,5 +1,6 @@
 package com.bookingprojectn1.entity;
 
+import com.bookingprojectn1.entity.template.AbsEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,13 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Library {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Library extends AbsEntity {
+
     private String name;
+
     private double lat;
+
     private double lng;
+
     @ManyToOne
     private User owner;
 

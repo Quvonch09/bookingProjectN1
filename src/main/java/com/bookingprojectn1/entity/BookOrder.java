@@ -25,6 +25,7 @@ public class BookOrder {
     private User user;
 
     private LocalDate startReservation;
+
     private LocalDate endReservation;
 
 }

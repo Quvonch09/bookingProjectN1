@@ -99,14 +99,9 @@ public class AuthService {
         User user = User.builder()
                 .firstName(auth.getFirstName())
                 .lastName(auth.getLastName())
-                .userName(auth.getUserName())
                 .phoneNumber(auth.getPhoneNumber())
                 .password(passwordEncoder.encode(auth.getPassword()))
                 .role(role)
-                .enabled(true)
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
                 .build();
 
         User save = userRepository.save(user);

@@ -26,7 +26,6 @@ public class BookService {
     private final BookRepository bookRepository;
     private final FileRepository fileRepository;
     private final LibraryRepository libraryRepository;
-    private final CategoryRepository categoryRepository;
     private final SubCategoryRepository subCategoryRepository;
 
     public ApiResponse addBook(ReqBook reqBook) {
@@ -59,7 +58,6 @@ public class BookService {
                 .feedbackList(null)
                 .year(reqBook.getYear())
                 .library(library)
-                .category(subCategory.getCategory())
                 .subCategory(subCategory)
                 .status(BookStatus.BORROWED)
                 .build();
@@ -133,8 +131,10 @@ public class BookService {
                 .pdfId(book.getPdf() != null ? book.getPdf().getId() : null)
                 .bookImgId(book.getBookImg() != null ? book.getBookImg().getId() : null)
                 .libraryId(book.getLibrary().getId())
-                .categoryId(book.getCategory().getId())
+                .categoryId(book.getSubCategory().getCategory().getId())
+                .categoryName(book.getSubCategory().getCategory().getName())
                 .subCategoryId(book.getSubCategory().getId())
+                .subCategoryName(book.getSubCategory().getName())
                 .bookStatus(book.getStatus().name())
                 .favouriteCount(book.getFavouriteList().size())
                 .feedBackBook(feedBackBookDTOList)
@@ -169,7 +169,6 @@ public class BookService {
         book.setBookImg(fileRepository.findById(reqBook.getBookImgId()).orElse(null));
         book.setLibrary(library);
         book.setYear(reqBook.getYear());
-        book.setCategory(subCategory.getCategory());
         book.setSubCategory(subCategory);
         book.setStatus(status);
         bookRepository.save(book);
@@ -249,7 +248,7 @@ public class BookService {
                 .fileId(book.getPdf()!=null ? book.getPdf().getId():null)
                 .bookImgId(book.getBookImg()!=null ? book.getBookImg().getId():null)
                 .libraryId(book.getLibrary()!= null ? book.getLibrary().getId():null)
-                .subCategoryId(book.getCategory() != null ? book.getCategory().getId():null)
+                .subCategoryId(book.getSubCategory() != null ? book.getSubCategory().getId():null)
                 .bookStatus(book.getStatus().name())
                 .build();
     }

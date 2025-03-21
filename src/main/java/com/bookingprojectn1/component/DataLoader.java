@@ -20,18 +20,14 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args)  {
-        if (userRepository.count() == 0) {
+        if (ddl.equals("create-drop") || ddl.equals("create")) {
             User newUser = new User();
             newUser.setFirstName("Admin");
             newUser.setLastName("Admin");
-            newUser.setUserName("Admin");
             newUser.setPassword(passwordEncoder.encode("root123"));
             newUser.setRole(ERole.ROLE_SUPER_ADMIN);
             newUser.setPhoneNumber("998901234567");
             newUser.setEnabled(true);
-            newUser.setAccountNonExpired(true);
-            newUser.setAccountNonLocked(true);
-            newUser.setCredentialsNonExpired(true);
             userRepository.save(newUser);
         }
     }
