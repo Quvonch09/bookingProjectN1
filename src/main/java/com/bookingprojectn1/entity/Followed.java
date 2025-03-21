@@ -15,7 +15,9 @@ public class Followed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne
     private User user;
+
     private LocalDate followedDate;
 }

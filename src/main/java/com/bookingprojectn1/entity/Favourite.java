@@ -12,10 +12,13 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 public class Favourite {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne
     private User createdBy;
+
     private LocalDateTime createdAt;
 }

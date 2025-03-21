@@ -39,7 +39,6 @@ public class PaymentService {
                 .paySum(paymentDTO.getPaySum())
                 .library(library)
                 .payDate(paymentDTO.getPayDate())
-                .createdAt(LocalDateTime.now())
                 .build();
         paymentRepository.save(payment);
 

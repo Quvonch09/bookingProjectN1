@@ -1,6 +1,7 @@
 package com.bookingprojectn1.entity;
 
 import com.bookingprojectn1.entity.enums.PayType;
+import com.bookingprojectn1.entity.template.AbsEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,19 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Payment {
+public class Payment extends AbsEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private Double paySum;
+
     private LocalDate payDate;
+
     @Enumerated(EnumType.STRING)
     private PayType payType;
+
     @ManyToOne
     private User payer;
+
     @ManyToOne
     private Library library;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 }
