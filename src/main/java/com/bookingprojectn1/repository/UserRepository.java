@@ -30,7 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                            @Param("role") String role,PageRequest pageRequest);
 
     Long countByRoleAndEnabledTrue(ERole role);
-    Optional<User> findByUserName(String username);
 
     Optional<User> findByIdAndEnabledTrue(Long id);
 

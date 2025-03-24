@@ -19,8 +19,8 @@ public class CategoryController {
     @Operation(summary = "Super Admin Category qushish")
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping
-    public ResponseEntity<ApiResponse> saveCategory(@RequestBody CategoryDTO categoryDTO) {
-        ApiResponse apiResponse = categoryService.saveCategory(categoryDTO);
+    public ResponseEntity<ApiResponse> saveCategory(@RequestParam String categoryName) {
+        ApiResponse apiResponse = categoryService.saveCategory(categoryName);
         return ResponseEntity.ok(apiResponse);
     }
 

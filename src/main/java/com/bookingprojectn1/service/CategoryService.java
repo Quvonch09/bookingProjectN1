@@ -17,14 +17,14 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public ApiResponse saveCategory(CategoryDTO categoryDTO) {
-        boolean b = categoryRepository.existsByNameIgnoreCase(categoryDTO.getName());
+    public ApiResponse saveCategory(String categoryName) {
+        boolean b = categoryRepository.existsByNameIgnoreCase(categoryName);
         if (b) {
             return new ApiResponse(ResponseError.ALREADY_EXIST("This category name"));
         }
 
         Category category = Category.builder()
-                .name(categoryDTO.getName())
+                .name(categoryName)
                 .build();
         categoryRepository.save(category);
         return new ApiResponse("Successfully saved category");
