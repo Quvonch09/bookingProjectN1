@@ -34,7 +34,7 @@ public class LibraryService {
 
         File file = fileRepository.findById(reqLibrary.getFileId()).orElse(null);
 
-        User user = userRepository.findByUserName(reqLibrary.getOwner()).orElse(null);
+        User user = userRepository.findByPhoneNumberAndEnabledTrue(reqLibrary.getOwnerPhoneNumber());
         if (user == null) {
             return new ApiResponse(ResponseError.NOTFOUND("Kechirasiz! Owner "));
         }
@@ -136,7 +136,7 @@ public class LibraryService {
             return new ApiResponse(ResponseError.NOTFOUND("Library"));
         }
 
-        User user = userRepository.findByUserName(reqLibrary.getOwner()).orElse(null);
+        User user = userRepository.findByPhoneNumberAndEnabledTrue(reqLibrary.getOwnerPhoneNumber());
         if (user == null) {
             user = new User();
         }

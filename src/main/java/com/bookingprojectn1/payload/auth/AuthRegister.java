@@ -20,10 +20,6 @@ public class AuthRegister {
     @NotBlank
     private String lastName;
 
-    @Size(min = 3, max = 25)
-    @NotBlank
-    private String userName;
-
     @Pattern(regexp = "^998([0-9][012345789]|[0-9][125679]|7[01234569])[0-9]{7}$",
             message = "Invalid Uzbekistan phone number")
     private String phoneNumber;

@@ -12,7 +12,7 @@ public class ReqLibrary {
     @Schema(hidden = true)
     private Long id;
     private String libraryName;
-    private String owner;
+    private String ownerPhoneNumber;
     private double lat;
     private double lng;
     private Long fileId;
